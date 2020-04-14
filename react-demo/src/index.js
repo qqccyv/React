@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Hello from './Hello';
 
 // const div = React.createElement('div',{class: 'btn'},'hello!')
 // ReactDOM.render(div,document.querySelector('#root'))
@@ -34,15 +35,15 @@ import ReactDOM from 'react-dom';
 
 // ReactDOM.render(<Hello />,document.querySelector('#root'))
 
-class MyInput extends React.Component {
-  render() {
-    return (
-      <div>
-        <laber htmlFor="ill">姓名</laber>
-        <input id="ill" type="text"></input>
-      </div>
-    )
-  }
-}
+// class MyInput extends React.Component {
+//   render() {
+//     return (
+//       <div>
+//         <laber htmlFor="ill">姓名</laber>
+//         <input id="ill" type="text"></input>
+//       </div>
+//     )
+//   }
+// }
 
-ReactDOM.render(<MyInput />, document.querySelector('#root'))
+ReactDOM.render(<Hello />, document.querySelector('#root'))
