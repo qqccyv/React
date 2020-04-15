@@ -1,19 +1,20 @@
 import React, { createRef, createContext } from 'react'
 // import { render } from 'react-dom'
-const {Provider,Consumer} = createContext()
 
 
 const Child1 = (props) => {
   return (
-    <Child2 />
+    <div>
+    {props.children}
+    </div>
   )
 }
 class Child2 extends React.Component {
   render() {
     return (
-      <Consumer>
-        {data => <h1>{data}</h1>}
-      </Consumer>
+        <div>
+        <div></div>
+        </div>
     )
   }
 }
@@ -24,11 +25,9 @@ export default class Hello extends React.Component {
  
   render() {
     return (
-      <Provider value={this.state.value}>
       <div>
-        <Child1 />
+        <Child1>我是子节点</Child1>
       </div>
-       </Provider>
     )
   }
 }
