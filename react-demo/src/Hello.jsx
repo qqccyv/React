@@ -5,40 +5,30 @@ const {Provider,Consumer} = createContext()
 
 const Child1 = (props) => {
   return (
-    // <Consumer>
-  <div>这里是兄弟给我说的话{props.value}
-  {/* {
-  data => <h1>{data}</h1>
-  } */}
-  </div>
-  // </Consumer>
+    <Child2 />
   )
 }
 class Child2 extends React.Component {
   render() {
     return (
-      <button onClick={() => this.props.saySomething('兄弟你好！')}>给兄弟说句话</button>
+      <Consumer>
+        {data => <h1>{data}</h1>}
+      </Consumer>
     )
   }
 }
 export default class Hello extends React.Component {
   state = {
-    value: ''
+    value: '666'
   }
-  saySomething(value) {
-    this.setState({
-      value: value
-    })
-  }
+ 
   render() {
     return (
-      // <Provider value="666">
+      <Provider value={this.state.value}>
       <div>
-        {/* <Child2 saySomething={this.saySomething.bind(this)} /> */}
-        <Child2 saySomething={(value)=>this.saySomething(value)} />
-        <Child1 value={this.state.value} hh={this.state.value} />
+        <Child1 />
       </div>
-      // </Provider>
+       </Provider>
     )
   }
 }
