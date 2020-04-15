@@ -1,19 +1,23 @@
 import React, { createRef, createContext } from 'react'
 // import { render } from 'react-dom'
-
+import PropTypes from 'prop-types'
 
 const Child1 = (props) => {
   return (
     <div>
-    {props.children}
+      <Child2>{props.children}</Child2>
     </div>
   )
 }
 class Child2 extends React.Component {
+  static propTypes={
+    children: PropTypes.string.isRequired
+  }
+
   render() {
     return (
         <div>
-        <div></div>
+          {this.props.children}
         </div>
     )
   }
@@ -26,7 +30,7 @@ export default class Hello extends React.Component {
   render() {
     return (
       <div>
-        <Child1>我是子节点</Child1>
+        <Child1>{'我是字符串'}</Child1>
       </div>
     )
   }
