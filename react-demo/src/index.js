@@ -106,45 +106,59 @@ import PropTypes from 'prop-types'
 //   }
 
 // }
-class Mouse extends React.Component {
-  static propTypes = {
-    children: PropTypes.func.isRequired
+function withMouse(WrappedComponent){
+  class Mouse extends React.Component {
+    // static propTypes = {
+    //   x: PropTypes.number.isRequired,
+    //   y: PropTypes.number.isRequired
+    // }
+    state = {
+      x: 0,
+      y: 0
+    }
+    componentDidMount() {
+      window.addEventListener('mousemove', this.mouseHandler.bind(this))
+    }
+    componentWillUnmount(){
+      window.removeEventListener('mousemove',this.mouseHandler.bind(this))
+    }
+    mouseHandler(e) {
+      // console.log(e.clientX);
+      this.setState({
+        x: e.clientX,
+        y: e.clientY
+      })
+  
+    }
+    render() {
+      return <WrappedComponent {...this.state}></WrappedComponent>
+    }
   }
-  state = {
-    x: 0,
-    y: 0
-  }
-  componentDidMount() {
-    window.addEventListener('mousemove', this.mouseHandler.bind(this))
-  }
-  componentWillUnmount(){
-    window.removeEventListener('mousemove',this.mouseHandler.bind(this))
-  }
-  mouseHandler(e) {
-    console.log(e.clientX);
-    this.setState({
-      x: e.clientX,
-      y: e.clientY
-    })
-
-  }
-  render() {
-    return this.props.children(this.state)
-  }
+  return Mouse
 }
 
+const Position = (props)=> {
+  
+    return (
+      <p>mouse的坐标是x:{props.x} y:{props.y}</p>
+    )
+  
+}
+
+const MousePosition = withMouse(Position)
 class App extends React.Component {
 
   render() {
     return (
       <div>
-        <Mouse>
+        <MousePosition></MousePosition>
+        {/* <Mouse>
           {(mouse) => {
             return (
               <p>mouse的坐标是x:{mouse.x} y:{mouse.y}</p>
             )
           }}
-        </Mouse>
+        </Mouse> */}
         {/* <Mouse>
           {(mouse) => {
             return (
