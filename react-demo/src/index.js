@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Hello from './Hello';
 import img from './images/menu1.15200d52.png'
+import PropTypes from 'prop-types'
 // const div = React.createElement('div',{class: 'btn'},'hello!')
 // ReactDOM.render(div,document.querySelector('#root'))
 
@@ -88,7 +89,7 @@ import img from './images/menu1.15200d52.png'
 //   componentDidMount() {
 //     this.timerId = setInterval(() => {
 //       console.log('一个定时器');
-      
+
 //     }, 1000);
 //     console.log('这里是子组件第一次更新:componentDidMount');
 //     //只在第一次挂载时调用，后续不再触发
@@ -106,47 +107,55 @@ import img from './images/menu1.15200d52.png'
 
 // }
 class Mouse extends React.Component {
+  static propTypes = {
+    children: PropTypes.func.isRequired
+  }
   state = {
     x: 0,
     y: 0
   }
-  componentDidMount(){
-    window.addEventListener('mousemove',this.mouseHandler.bind(this))
+  componentDidMount() {
+    window.addEventListener('mousemove', this.mouseHandler.bind(this))
   }
-  mouseHandler(e){
-    // console.log(e);
+  componentWillUnmount(){
+    window.removeEventListener('mousemove',this.mouseHandler.bind(this))
+  }
+  mouseHandler(e) {
+    console.log(e.clientX);
     this.setState({
       x: e.clientX,
       y: e.clientY
     })
-    
+
   }
-  render(){
-    return this.props.render(this.state)
+  render() {
+    return this.props.children(this.state)
   }
 }
 
 class App extends React.Component {
-  
-  render(){
+
+  render() {
     return (
       <div>
-      <Mouse render={(mouse)=>{
-        return (
-        <p>mouse的坐标是x:{mouse.x} y:{mouse.y}</p>
-        )
-      }}></Mouse>
-      <Mouse render={(mouse)=>{
-        return (
-          <img src={img} style={{
-            position: 'absolute',
-            top: mouse.y,
-            left: mouse.x
-          }}></img>
-        )
-      }}>
-
-      </Mouse>
+        <Mouse>
+          {(mouse) => {
+            return (
+              <p>mouse的坐标是x:{mouse.x} y:{mouse.y}</p>
+            )
+          }}
+        </Mouse>
+        {/* <Mouse>
+          {(mouse) => {
+            return (
+              <img src={img} style={{
+                position: 'absolute',
+                top: mouse.y,
+                left: mouse.x
+              }}></img>
+            )
+          }}
+        </Mouse> */}
       </div>
     )
   }
