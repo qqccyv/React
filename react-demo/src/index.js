@@ -131,10 +131,15 @@ function withMouse(WrappedComponent){
   
     }
     render() {
-      return <WrappedComponent {...this.state}></WrappedComponent>
+      return <WrappedComponent {...this.state}{...this.props}></WrappedComponent>
     }
   }
+  Mouse.displayName = `withMouse${getDisplayName(WrappedComponent)}`
   return Mouse
+}
+
+const getDisplayName = (WrappedComponent)=>{
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component'
 }
 
 const Position = (props)=> {
