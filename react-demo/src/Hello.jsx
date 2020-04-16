@@ -1,36 +1,14 @@
-import React, { createRef, createContext } from 'react'
-// import { render } from 'react-dom'
-import PropTypes from 'prop-types'
+import React,{createRef} from 'react'
 
-const Child1 = (props) => {
-  return (
-    <div>
-      <Child2>{props.children}</Child2>
-    </div>
-  )
-}
-class Child2 extends React.Component {
-  static propTypes={
-    children: PropTypes.string.isRequired
-  }
-
-  render() {
-    return (
-        <div>
-          {this.props.children}
-        </div>
-    )
-  }
-}
 export default class Hello extends React.Component {
-  state = {
-    value: '666'
-  }
- 
+  input = createRef()
   render() {
     return (
       <div>
-        <Child1>{'我是字符串'}</Child1>
+        <input ref={this.input} type="text" name="" id=""/>
+        {/* No.3 设置一个ref的关联元素，获取非受控元素本身 */}
+        <button onClick={()=>console.log(this.input.current)
+        }>获取非受控组件</button>
       </div>
     )
   }

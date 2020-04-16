@@ -46,4 +46,63 @@ import Hello from './Hello';
 //   }
 // }
 
-ReactDOM.render(<Hello />, document.querySelector('#root'))
+
+class LifeCycle extends React.Component {
+  constructor() {
+    super()
+    // console.log('钩子函数：constructor')
+    this.state = {
+      count: 0
+    }
+  }
+  componentDidMount() {
+    // console.log('钩子函数：componentDidMount')
+  }
+  btnHandler() {
+    this.setState({
+      count: this.state.count + 1
+    })
+    // this.forceUpdate()  强制刷新方法  会触发render方法
+  }
+  render() {
+    // console.log('钩子函数：render')
+    return (
+      <div>
+        {
+          this.state.count > 3 ? <p>豆豆被打死了</p> : <Child count={this.state.count}></Child>
+        }
+
+        <button onClick={this.btnHandler.bind(this)}>打豆豆</button>
+      </div>
+    )
+  }
+}
+
+class Child extends React.Component {
+  render() {
+    return (
+      <h3>豆豆被打了几次了：{this.props.count}</h3>
+    )
+  }
+
+  componentDidMount() {
+    this.timerId = setInterval(() => {
+      console.log('一个定时器');
+      
+    }, 1000);
+    console.log('这里是子组件第一次更新:componentDidMount');
+    //只在第一次挂载时调用，后续不再触发
+  }
+  componentDidUpdate(prevProps) {
+    console.log('子组件componentDidUpdate更新了：' + prevProps.count);
+    console.log('这一次的props：' + this.props.count);
+
+
+  }
+  componentWillUnmount(){
+    console.log('子组件被卸载了');
+    clearInterval(this.timerId)
+  }
+
+}
+ReactDOM.render(<LifeCycle />, document.querySelector('#root'))
