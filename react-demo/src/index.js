@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Hello from './Hello';
-
+import img from './images/menu1.15200d52.png'
 // const div = React.createElement('div',{class: 'btn'},'hello!')
 // ReactDOM.render(div,document.querySelector('#root'))
 
@@ -47,62 +47,108 @@ import Hello from './Hello';
 // }
 
 
-class LifeCycle extends React.Component {
-  constructor() {
-    super()
-    // console.log('钩子函数：constructor')
-    this.state = {
-      count: 0
-    }
+// class LifeCycle extends React.Component {
+//   constructor() {
+//     super()
+//     // console.log('钩子函数：constructor')
+//     this.state = {
+//       count: 0
+//     }
+//   }
+//   componentDidMount() {
+//     // console.log('钩子函数：componentDidMount')
+//   }
+//   btnHandler() {
+//     this.setState({
+//       count: this.state.count + 1
+//     })
+//     // this.forceUpdate()  强制刷新方法  会触发render方法
+//   }
+//   render() {
+//     // console.log('钩子函数：render')
+//     return (
+//       <div>
+//         {
+//           this.state.count > 3 ? <p>豆豆被打死了</p> : <Child count={this.state.count}></Child>
+//         }
+
+//         <button onClick={this.btnHandler.bind(this)}>打豆豆</button>
+//       </div>
+//     )
+//   }
+// }
+
+// class Child extends React.Component {
+//   render() {
+//     return (
+//       <h3>豆豆被打了几次了：{this.props.count}</h3>
+//     )
+//   }
+
+//   componentDidMount() {
+//     this.timerId = setInterval(() => {
+//       console.log('一个定时器');
+      
+//     }, 1000);
+//     console.log('这里是子组件第一次更新:componentDidMount');
+//     //只在第一次挂载时调用，后续不再触发
+//   }
+//   componentDidUpdate(prevProps) {
+//     console.log('子组件componentDidUpdate更新了：' + prevProps.count);
+//     console.log('这一次的props：' + this.props.count);
+
+
+//   }
+//   componentWillUnmount(){
+//     console.log('子组件被卸载了');
+//     clearInterval(this.timerId)
+//   }
+
+// }
+class Mouse extends React.Component {
+  state = {
+    x: 0,
+    y: 0
   }
-  componentDidMount() {
-    // console.log('钩子函数：componentDidMount')
+  componentDidMount(){
+    window.addEventListener('mousemove',this.mouseHandler.bind(this))
   }
-  btnHandler() {
+  mouseHandler(e){
+    // console.log(e);
     this.setState({
-      count: this.state.count + 1
+      x: e.clientX,
+      y: e.clientY
     })
-    // this.forceUpdate()  强制刷新方法  会触发render方法
+    
   }
-  render() {
-    // console.log('钩子函数：render')
+  render(){
+    return this.props.render(this.state)
+  }
+}
+
+class App extends React.Component {
+  
+  render(){
     return (
       <div>
-        {
-          this.state.count > 3 ? <p>豆豆被打死了</p> : <Child count={this.state.count}></Child>
-        }
+      <Mouse render={(mouse)=>{
+        return (
+        <p>mouse的坐标是x:{mouse.x} y:{mouse.y}</p>
+        )
+      }}></Mouse>
+      <Mouse render={(mouse)=>{
+        return (
+          <img src={img} style={{
+            position: 'absolute',
+            top: mouse.y,
+            left: mouse.x
+          }}></img>
+        )
+      }}>
 
-        <button onClick={this.btnHandler.bind(this)}>打豆豆</button>
+      </Mouse>
       </div>
     )
   }
 }
-
-class Child extends React.Component {
-  render() {
-    return (
-      <h3>豆豆被打了几次了：{this.props.count}</h3>
-    )
-  }
-
-  componentDidMount() {
-    this.timerId = setInterval(() => {
-      console.log('一个定时器');
-      
-    }, 1000);
-    console.log('这里是子组件第一次更新:componentDidMount');
-    //只在第一次挂载时调用，后续不再触发
-  }
-  componentDidUpdate(prevProps) {
-    console.log('子组件componentDidUpdate更新了：' + prevProps.count);
-    console.log('这一次的props：' + this.props.count);
-
-
-  }
-  componentWillUnmount(){
-    console.log('子组件被卸载了');
-    clearInterval(this.timerId)
-  }
-
-}
-ReactDOM.render(<LifeCycle />, document.querySelector('#root'))
+ReactDOM.render(<App />, document.querySelector('#root'))
