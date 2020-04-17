@@ -252,32 +252,51 @@ import PropTypes from 'prop-types'
 // }
 
 
-class App extends React.PureComponent {
-  state = {
-    obj: {
-      number: 0
-    }
-  }
+// class App extends React.PureComponent {
+//   state = {
+//     obj: {
+//       number: 0
+//     }
+//   }
 
-  btnHandler(){
-    const newObj = {...this.state.obj}
-    newObj.number = Math.floor(Math.random()*3)
-    this.setState((state)=>{
-      return {
-        obj: newObj
-      }
-    },()=>{console.log(this.state.obj);
-    })
-  }
-  render(){
-    console.log('render');
+//   btnHandler(){
+//     const newObj = {...this.state.obj}
+//     newObj.number = Math.floor(Math.random()*3)
+//     this.setState(()=>{
+//       return {
+//         obj: newObj
+//       }
+//     },()=>{console.log(this.state.obj);
+//     })
+//   }
+//   render(){
+//     console.log('render');
     
+//     return (
+//     <div>
+//       <h3>number的值为{this.state.obj.number}</h3>
+//       <button onClick={this.btnHandler.bind(this)}>重置</button>
+//     </div>
+//     )
+//   }
+// }
+
+import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
+const First = ()=>{
+  return (
+    <h3>这里是第一个页面</h3>
+  )
+}
+class App extends React.Component {
+  render() {
     return (
-    <div>
-      <h3>number的值为{this.state.obj.number}</h3>
-      <button onClick={this.btnHandler.bind(this)}>重置</button>
-    </div>
+      <Router>
+        <h1>React路由基础使用</h1>
+        <Link to="/first">页面一</Link>
+        <Route path="/first" component={First}></Route>
+      </Router>
     )
   }
 }
+
 ReactDOM.render(<App />, document.querySelector('#root'))
