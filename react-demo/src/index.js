@@ -106,6 +106,13 @@ import PropTypes from 'prop-types'
 //   }
 
 // }
+render() {
+  //利用ES6的解构语法，为children设置一个默认值  
+  //如果是render模式，那children就是设置的render默认值，如果是children模式，那就是使用传入的children
+  const {render,children=render} = this.props
+  return children(this.state)
+}
+
 function withMouse(WrappedComponent){
   class Mouse extends React.Component {
     // static propTypes = {
@@ -116,11 +123,14 @@ function withMouse(WrappedComponent){
       x: 0,
       y: 0
     }
+    methods= {
+      
+    }
     componentDidMount() {
-      window.addEventListener('mousemove', this.mouseHandler.bind(this))
+      window.addEventListener('mousemove',this.methods.m = this.mouseHandler.bind(this))
     }
     componentWillUnmount(){
-      window.removeEventListener('mousemove',this.mouseHandler.bind(this))
+      window.removeEventListener('mousemove',this.methods.m)
     }
     mouseHandler(e) {
       // console.log(e.clientX);
