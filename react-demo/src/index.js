@@ -185,27 +185,66 @@ import PropTypes from 'prop-types'
 //   }
 // }
 
+// class App extends React.Component {
+//   state = {
+//     count: 0
+//   }
+//   btnHandler(){
+//     //推荐setstate写法，设置函数方法，可以获取即时最新的state，props的值
+//     this.setState((state,props)=>{
+//       return {
+//         count: state.count+1
+//       }
+//     },()=>{
+//       //回调函数，在设置完状态值，且render渲染页面结束后调用
+//       document.title = `更新后的count值为${this.state.count}`
+//     })
+//   }
+//   render(){
+//     return (
+//       <div>
+//         <h3>最新的count值为：{this.state.count}</h3>
+//         <button onClick={this.btnHandler.bind(this)}>+1</button>
+//       </div>
+//     )
+//   }
+// }
+
 class App extends React.Component {
   state = {
     count: 0
   }
   btnHandler(){
-    //推荐setstate写法，设置函数方法，可以获取即时最新的state，props的值
-    this.setState((state,props)=>{
-      return {
-        count: state.count+1
-      }
-    },()=>{
-      //回调函数，在设置完状态值，且render渲染页面结束后调用
-      document.title = `更新后的count值为${this.state.count}`
+    this.setState(()=>{
+    return  {count: Math.floor(Math.random()*3)}
     })
   }
+  //这里的形参顺序不能改变
+  shouldComponentUpdate(nextProps,nextState){
+    // console.log(nextState);
+    return nextState.count !== this.state.count
+  }
   render(){
+    console.log('父亲render');
+    
     return (
       <div>
-        <h3>最新的count值为：{this.state.count}</h3>
-        <button onClick={this.btnHandler.bind(this)}>+1</button>
+        <Child count={this.state.count}></Child>
+        <button onClick={this.btnHandler.bind(this)}>重置</button>
       </div>
+    )
+  }
+}
+class Child extends React.Component {
+   //这里的形参顺序不能改变
+   shouldComponentUpdate(nextProps){
+    // console.log(nextState);
+    return nextProps.count !== this.props.count
+  }
+  render(){
+    console.log('儿子render');
+    return (
+      <h3>count的值：{this.props.count}</h3>
     )
   }
 }
