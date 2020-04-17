@@ -211,42 +211,72 @@ import PropTypes from 'prop-types'
 // }
 
 
-//纯组件内部自动实现了shouldComponentUpdate的作用，同时会影响子组件
+// //纯组件内部自动实现了shouldComponentUpdate的作用，同时会影响子组件
+// class App extends React.PureComponent {
+//   state = {
+//     count: 0
+//   }
+//   btnHandler(){
+//     this.setState(()=>{
+//     return  {count: Math.floor(Math.random()*3)}
+//     })
+//   }
+//   // //这里的形参顺序不能改变
+//   // shouldComponentUpdate(nextProps,nextState){
+//   //   // console.log(nextState);
+//   //   return nextState.count !== this.state.count
+//   // }
+//   render(){
+//     console.log('父亲render');
+    
+//     return (
+//       <div>
+//         <Child count={this.state.count}></Child>
+//         <button onClick={this.btnHandler.bind(this)}>重置</button>
+//       </div>
+//     )
+//   }
+// }
+// class Child extends React.Component {
+//   //  //这里的形参顺序不能改变
+//   //  shouldComponentUpdate(nextProps){
+//   //   // console.log(nextState);
+//   //   return nextProps.count !== this.props.count
+//   // }
+//   render(){
+//     console.log('儿子render');
+//     return (
+//       <h3>count的值：{this.props.count}</h3>
+//     )
+//   }
+// }
+
+
 class App extends React.PureComponent {
   state = {
-    count: 0
+    obj: {
+      number: 0
+    }
   }
+
   btnHandler(){
-    this.setState(()=>{
-    return  {count: Math.floor(Math.random()*3)}
+    const newObj = {...this.state.obj}
+    newObj.number = Math.floor(Math.random()*3)
+    this.setState((state)=>{
+      return {
+        obj: newObj
+      }
+    },()=>{console.log(this.state.obj);
     })
   }
-  // //这里的形参顺序不能改变
-  // shouldComponentUpdate(nextProps,nextState){
-  //   // console.log(nextState);
-  //   return nextState.count !== this.state.count
-  // }
   render(){
-    console.log('父亲render');
+    console.log('render');
     
     return (
-      <div>
-        <Child count={this.state.count}></Child>
-        <button onClick={this.btnHandler.bind(this)}>重置</button>
-      </div>
-    )
-  }
-}
-class Child extends React.Component {
-  //  //这里的形参顺序不能改变
-  //  shouldComponentUpdate(nextProps){
-  //   // console.log(nextState);
-  //   return nextProps.count !== this.props.count
-  // }
-  render(){
-    console.log('儿子render');
-    return (
-      <h3>count的值：{this.props.count}</h3>
+    <div>
+      <h3>number的值为{this.state.obj.number}</h3>
+      <button onClick={this.btnHandler.bind(this)}>重置</button>
+    </div>
     )
   }
 }
