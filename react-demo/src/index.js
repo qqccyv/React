@@ -287,13 +287,18 @@ const First = ()=>{
     <h3>这里是第一个页面</h3>
   )
 }
+const Second = ()=>{
+  return <h3>这里是第二个页面</h3>
+}
 class App extends React.Component {
   render() {
     return (
       <Router>
         <h1>React路由基础使用</h1>
         <Link to="/first">页面一</Link>
+        <Link to="/second">页面二</Link>
         <Route path="/first" component={First}></Route>
+        <Route path="/second" component={Second}></Route>
       </Router>
     )
   }
