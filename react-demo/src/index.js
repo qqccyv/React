@@ -210,7 +210,9 @@ import PropTypes from 'prop-types'
 //   }
 // }
 
-class App extends React.Component {
+
+//纯组件内部自动实现了shouldComponentUpdate的作用，同时会影响子组件
+class App extends React.PureComponent {
   state = {
     count: 0
   }
@@ -219,11 +221,11 @@ class App extends React.Component {
     return  {count: Math.floor(Math.random()*3)}
     })
   }
-  //这里的形参顺序不能改变
-  shouldComponentUpdate(nextProps,nextState){
-    // console.log(nextState);
-    return nextState.count !== this.state.count
-  }
+  // //这里的形参顺序不能改变
+  // shouldComponentUpdate(nextProps,nextState){
+  //   // console.log(nextState);
+  //   return nextState.count !== this.state.count
+  // }
   render(){
     console.log('父亲render');
     
@@ -236,11 +238,11 @@ class App extends React.Component {
   }
 }
 class Child extends React.Component {
-   //这里的形参顺序不能改变
-   shouldComponentUpdate(nextProps){
-    // console.log(nextState);
-    return nextProps.count !== this.props.count
-  }
+  //  //这里的形参顺序不能改变
+  //  shouldComponentUpdate(nextProps){
+  //   // console.log(nextState);
+  //   return nextProps.count !== this.props.count
+  // }
   render(){
     console.log('儿子render');
     return (
