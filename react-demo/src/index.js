@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Hello from './Hello';
 import img from './images/menu1.15200d52.png'
 import PropTypes from 'prop-types'
+import './index.css'
 // const div = React.createElement('div',{class: 'btn'},'hello!')
 // ReactDOM.render(div,document.querySelector('#root'))
 
@@ -121,7 +122,7 @@ import PropTypes from 'prop-types'
 //       y: 0
 //     }
 //     methods= {
-      
+
 //     }
 //     componentDidMount() {
 //       window.addEventListener('mousemove',this.methods.m = this.mouseHandler.bind(this))
@@ -135,7 +136,7 @@ import PropTypes from 'prop-types'
 //         x: e.clientX,
 //         y: e.clientY
 //       })
-  
+
 //     }
 //     render() {
 //       return <WrappedComponent {...this.state}{...this.props}></WrappedComponent>
@@ -148,11 +149,11 @@ import PropTypes from 'prop-types'
 
 
 // const Position = (props)=> {
-  
+
 //     return (
 //       <p>mouse的坐标是x:{props.x} y:{props.y}</p>
 //     )
-  
+
 // }
 
 // const MousePosition = withMouse(Position)
@@ -228,7 +229,7 @@ import PropTypes from 'prop-types'
 //   // }
 //   render(){
 //     console.log('父亲render');
-    
+
 //     return (
 //       <div>
 //         <Child count={this.state.count}></Child>
@@ -271,7 +272,7 @@ import PropTypes from 'prop-types'
 //   }
 //   render(){
 //     console.log('render');
-    
+
 //     return (
 //     <div>
 //       <h3>number的值为{this.state.obj.number}</h3>
@@ -281,27 +282,162 @@ import PropTypes from 'prop-types'
 //   }
 // }
 
-import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
-const First = ()=>{
-  return (
-    <h3>这里是第一个页面</h3>
-  )
-}
-const Second = ()=>{
-  return <h3>这里是第二个页面</h3>
-}
-class App extends React.Component {
-  render() {
+// import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
+// const First = ()=>{
+//   return (
+//     <h3>这里是第一个页面</h3>
+//   )
+// }
+// const Second = ()=>{
+//   return <h3>这里是第二个页面</h3>
+// }
+// class App extends React.Component {
+//   render() {
+//     return (
+//       <Router>
+//         <h1>React路由基础使用</h1>
+//         <Link to="/first">页面一</Link>
+//         <Link to="/second">页面二</Link>
+//         <Route path="/first" component={First}></Route>
+//         <Route path="/second" component={Second}></Route>
+//       </Router>
+//     )
+//   }
+// }
+class Header  extends React.Component {
+  components= {
+    input: ''
+  }
+  addHandler(){
+    let content = this.components.input.value.trim()
+    if(!content) return alert('输入内容不能为空')
+    this.props.todoItemAdd(content)
+    this.components.input.value = ''
+  }
+  render(){
     return (
-      <Router>
-        <h1>React路由基础使用</h1>
-        <Link to="/first">页面一</Link>
-        <Link to="/second">页面二</Link>
-        <Route path="/first" component={First}></Route>
-        <Route path="/second" component={Second}></Route>
-      </Router>
+      <div>
+        <input placeholder="请输入需要跟踪的任务" ref={el => this.components.input = el} /> <button onClick={this.addHandler.bind(this)}>添加</button>
+      </div>
     )
   }
 }
+class Body extends React.Component {
+  state = {
 
+  }
+
+  inputHandler(id,e) {
+    this.props.todoItemChange(id, e.target.checked)
+  }
+  btnHandler(id){
+    this.props.todoItemDel(id)
+  }
+  render() {
+    const {filterValue} = this.props
+    console.log(filterValue==='ALL');
+    
+    return (
+      <div>
+        {this.props.todoList.map(item => {
+          if(filterValue==='ALL'){
+            return (
+              <li key={item.id}>
+                <input checked={item.completed} type="checkbox" onChange={this.inputHandler.bind(this,item.id)}></input>
+                <span>{item.content}</span>
+                <button onClick={this.btnHandler.bind(this,item.id)}>删除</button>
+              </li>
+            )
+          }
+          if(filterValue==='Completed' && item.completed){
+            return (
+              <li key={item.id}>
+                <input checked={item.completed} type="checkbox" onChange={this.inputHandler.bind(this,item.id)}></input>
+                <span>{item.content}</span>
+                <button onClick={this.btnHandler.bind(this,item.id)}>删除</button>
+              </li>
+            )
+          }
+          if(filterValue==='unCompleted' && !item.completed){
+            return (
+              <li key={item.id}>
+                <input checked={item.completed} type="checkbox" onChange={this.inputHandler.bind(this,item.id)}></input>
+                <span>{item.content}</span>
+                <button onClick={this.btnHandler.bind(this,item.id)}>删除</button>
+              </li>
+            )
+          }
+        })}
+      </div>
+    )
+  }
+}
+class Footer extends React.Component {
+  btnHandler(e){
+    // console.log(e.target.value);
+    this.props.filterItemValue(e.target.value)
+  }
+  render() {
+    return (
+      <div>
+        <button value="ALL" onClick={this.btnHandler.bind(this)}>全部</button>
+        <button value="Completed" onClick={this.btnHandler.bind(this)}>已完成</button>
+        <button value="unCompleted" onClick={this.btnHandler.bind(this)}>未完成</button>
+      </div>
+    )
+  }
+}
+class App extends React.Component {
+  state = {
+    todoList: [
+      {
+        id: 1,
+        content: '打豆豆',
+        completed: false
+      }
+    ],
+    filterValue: 'ALL'
+  }
+  todoItemChange(id, completed) {
+    // console.log(completed);
+    const newTodoList = [...this.state.todoList]
+    newTodoList.find(item => item.id == id).completed = completed
+    this.setState({
+      todoList: newTodoList
+    },()=>console.log(this.state.todoList))
+  }
+
+  todoItemAdd(content){
+    const newTodoList = [...this.state.todoList]
+    newTodoList.unshift({
+      id: newTodoList[0]? newTodoList[0].id+1 : 1,
+      content: content,
+      completed: false
+    })
+    this.setState({
+      todoList: newTodoList
+    },()=>console.log(this.state.todoList)
+    )
+  }
+  todoItemDel(id){
+    this.setState({
+      todoList: this.state.todoList.filter(item=>item.id != id)
+    })
+  }
+  filterItemValue(value){
+    this.setState({
+      filterValue: value
+    },()=>console.log(this.state.filterValue)
+    )
+  }
+  render() {
+    return (
+      <div className="container">
+        <Header todoItemAdd={this.todoItemAdd.bind(this)}></Header>
+        <Body filterValue={this.state.filterValue}  todoList={this.state.todoList} todoItemChange={this.todoItemChange.bind(this)} todoItemDel={this.todoItemDel.bind(this)}></Body>
+        <Footer filterItemValue={this.filterItemValue.bind(this)}></Footer>
+      </div>
+    )
+  }
+}
 ReactDOM.render(<App />, document.querySelector('#root'))
