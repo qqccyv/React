@@ -282,7 +282,7 @@ import './index.css'
 //   }
 // }
 
-// import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 // const First = ()=>{
 //   return (
 //     <h3>这里是第一个页面</h3>
@@ -304,139 +304,190 @@ import './index.css'
 //     )
 //   }
 // }
-class Header  extends React.Component {
-  components= {
-    input: ''
-  }
-  addHandler(){
-    let content = this.components.input.value.trim()
-    if(!content) return alert('输入内容不能为空')
-    this.props.todoItemAdd(content)
-    this.components.input.value = ''
-  }
-  render(){
-    return (
-      <div>
-        <input placeholder="请输入需要跟踪的任务" ref={el => this.components.input = el} /> <button onClick={this.addHandler.bind(this)}>添加</button>
-      </div>
-    )
-  }
-}
-class Body extends React.Component {
-  state = {
 
-  }
 
-  inputHandler(id,e) {
-    this.props.todoItemChange(id, e.target.checked)
+
+// class Header  extends React.Component {
+//   components= {
+//     input: ''
+//   }
+//   addHandler(){
+//     let content = this.components.input.value.trim()
+//     if(!content) return alert('输入内容不能为空')
+//     this.props.todoItemAdd(content)
+//     this.components.input.value = ''
+//   }
+//   render(){
+//     return (
+//       <div>
+//         <input placeholder="请输入需要跟踪的任务" ref={el => this.components.input = el} /> <button onClick={this.addHandler.bind(this)}>添加</button>
+//       </div>
+//     )
+//   }
+// }
+// class Body extends React.Component {
+//   state = {
+
+//   }
+
+//   inputHandler(id,e) {
+//     this.props.todoItemChange(id, e.target.checked)
+//   }
+//   btnHandler(id){
+//     this.props.todoItemDel(id)
+//   }
+//   render() {
+//     const {filterValue} = this.props
+//     // console.log(filterValue==='ALL');
+
+//     return (
+//       <div>
+//         {this.props.todoList.map(item => {
+//           if(filterValue==='ALL'){
+//             return (
+//               <li key={item.id}>
+//                 <input checked={item.completed} type="checkbox" onChange={this.inputHandler.bind(this,item.id)}></input>
+//                 <span>{item.content}</span>
+//                 <button onClick={this.btnHandler.bind(this,item.id)}>删除</button>
+//               </li>
+//             )
+//           }
+//           if(filterValue==='Completed' && item.completed){
+//             return (
+//               <li key={item.id}>
+//                 <input checked={item.completed} type="checkbox" onChange={this.inputHandler.bind(this,item.id)}></input>
+//                 <span>{item.content}</span>
+//                 <button onClick={this.btnHandler.bind(this,item.id)}>删除</button>
+//               </li>
+//             )
+//           }
+//           if(filterValue==='unCompleted' && !item.completed){
+//             return (
+//               <li key={item.id}>
+//                 <input checked={item.completed} type="checkbox" onChange={this.inputHandler.bind(this,item.id)}></input>
+//                 <span>{item.content}</span>
+//                 <button onClick={this.btnHandler.bind(this,item.id)}>删除</button>
+//               </li>
+//             )
+//           }
+//         })}
+//       </div>
+//     )
+//   }
+// }
+// class Footer extends React.Component {
+//   btnHandler(e){
+//     // console.log(e.target.value);
+//     this.props.filterItemValue(e.target.value)
+//   }
+//   render() {
+//     return (
+//       <div>
+//         <button value="ALL" onClick={this.btnHandler.bind(this)}>全部</button>
+//         <button value="Completed" onClick={this.btnHandler.bind(this)}>已完成</button>
+//         <button value="unCompleted" onClick={this.btnHandler.bind(this)}>未完成</button>
+//       </div>
+//     )
+//   }
+// }
+// class App extends React.Component {
+//   state = {
+//     todoList: [
+//       {
+//         id: 1,
+//         content: '打豆豆',
+//         completed: false
+//       }
+//     ],
+//     filterValue: 'ALL'
+//   }
+//   todoItemChange(id, completed) {
+//     // console.log(completed);
+//     const newTodoList = [...this.state.todoList]
+//     newTodoList.find(item => item.id == id).completed = completed
+//     this.setState({
+//       todoList: newTodoList
+//     },()=>console.log(this.state.todoList))
+//   }
+
+//   todoItemAdd(content){
+//     const newTodoList = [...this.state.todoList]
+//     newTodoList.unshift({
+//       id: newTodoList[0]? newTodoList[0].id+1 : 1,
+//       content: content,
+//       completed: false
+//     })
+//     this.setState({
+//       todoList: newTodoList
+//     },()=>console.log(this.state.todoList)
+//     )
+//   }
+//   todoItemDel(id){
+//     this.setState({
+//       todoList: this.state.todoList.filter(item=>item.id != id)
+//     })
+//   }
+//   filterItemValue(value){
+//     this.setState({
+//       filterValue: value
+//     },()=>console.log(this.state.filterValue)
+//     )
+//   }
+//   render() {
+//     return (
+//       <div className="container">
+//         <Header todoItemAdd={this.todoItemAdd.bind(this)}></Header>
+//         <Body filterValue={this.state.filterValue}  todoList={this.state.todoList} todoItemChange={this.todoItemChange.bind(this)} todoItemDel={this.todoItemDel.bind(this)}></Body>
+//         <Footer filterItemValue={this.filterItemValue.bind(this)}></Footer>
+//       </div>
+//     )
+//   }
+// }
+const First = (props) => {
+ const goSecond=()=>{
+  props.history.push('/second/a')
   }
-  btnHandler(id){
-    this.props.todoItemDel(id)
-  }
-  render() {
-    const {filterValue} = this.props
-    console.log(filterValue==='ALL');
-    
-    return (
-      <div>
-        {this.props.todoList.map(item => {
-          if(filterValue==='ALL'){
-            return (
-              <li key={item.id}>
-                <input checked={item.completed} type="checkbox" onChange={this.inputHandler.bind(this,item.id)}></input>
-                <span>{item.content}</span>
-                <button onClick={this.btnHandler.bind(this,item.id)}>删除</button>
-              </li>
-            )
-          }
-          if(filterValue==='Completed' && item.completed){
-            return (
-              <li key={item.id}>
-                <input checked={item.completed} type="checkbox" onChange={this.inputHandler.bind(this,item.id)}></input>
-                <span>{item.content}</span>
-                <button onClick={this.btnHandler.bind(this,item.id)}>删除</button>
-              </li>
-            )
-          }
-          if(filterValue==='unCompleted' && !item.completed){
-            return (
-              <li key={item.id}>
-                <input checked={item.completed} type="checkbox" onChange={this.inputHandler.bind(this,item.id)}></input>
-                <span>{item.content}</span>
-                <button onClick={this.btnHandler.bind(this,item.id)}>删除</button>
-              </li>
-            )
-          }
-        })}
-      </div>
-    )
-  }
+  return (
+    <div>
+      <h4>这里是第一个页面</h4>
+      <button onClick={goSecond}>第二页</button>
+    </div>
+  )
 }
-class Footer extends React.Component {
-  btnHandler(e){
-    // console.log(e.target.value);
-    this.props.filterItemValue(e.target.value)
+const Second = (props) => {
+ const goFirst = ()=>{
+    props.history.push('/first')
   }
-  render() {
-    return (
-      <div>
-        <button value="ALL" onClick={this.btnHandler.bind(this)}>全部</button>
-        <button value="Completed" onClick={this.btnHandler.bind(this)}>已完成</button>
-        <button value="unCompleted" onClick={this.btnHandler.bind(this)}>未完成</button>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <h4>这里是第二个页面</h4>
+      <button onClick={goFirst}>第一页</button>
+    </div>
+  )
 }
+const Second2 = (props) => {
+ const goFirst = ()=>{
+    props.history.push('/first')
+  }
+  return (
+    <div>
+      <h4>这里是第二2个页面</h4>
+      <button onClick={goFirst}>第一页</button>
+    </div>
+  )
+}
+
 class App extends React.Component {
-  state = {
-    todoList: [
-      {
-        id: 1,
-        content: '打豆豆',
-        completed: false
-      }
-    ],
-    filterValue: 'ALL'
-  }
-  todoItemChange(id, completed) {
-    // console.log(completed);
-    const newTodoList = [...this.state.todoList]
-    newTodoList.find(item => item.id == id).completed = completed
-    this.setState({
-      todoList: newTodoList
-    },()=>console.log(this.state.todoList))
-  }
 
-  todoItemAdd(content){
-    const newTodoList = [...this.state.todoList]
-    newTodoList.unshift({
-      id: newTodoList[0]? newTodoList[0].id+1 : 1,
-      content: content,
-      completed: false
-    })
-    this.setState({
-      todoList: newTodoList
-    },()=>console.log(this.state.todoList)
-    )
-  }
-  todoItemDel(id){
-    this.setState({
-      todoList: this.state.todoList.filter(item=>item.id != id)
-    })
-  }
-  filterItemValue(value){
-    this.setState({
-      filterValue: value
-    },()=>console.log(this.state.filterValue)
-    )
-  }
+
   render() {
     return (
-      <div className="container">
-        <Header todoItemAdd={this.todoItemAdd.bind(this)}></Header>
-        <Body filterValue={this.state.filterValue}  todoList={this.state.todoList} todoItemChange={this.todoItemChange.bind(this)} todoItemDel={this.todoItemDel.bind(this)}></Body>
-        <Footer filterItemValue={this.filterItemValue.bind(this)}></Footer>
-      </div>
+      <Router>
+        <Route exact path="/" component={First}></Route>
+        <Route exact path="/first" component={First}></Route>
+        <Route exact  path="/second" component={Second}></Route>
+        <Route exact  path="/second/a" component={Second2}></Route>
+      </Router>
     )
   }
 }
