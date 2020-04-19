@@ -7,11 +7,12 @@ import Profile from './Profile'
 import Index from './Index/index.jsx'
 import './index.css'
 
+// tab栏数据
 const tabItems = [
   {
     title: '首页',
     icon: 'icon-ind',
-    path: '/home/index'
+    path: '/home'
   },
   {
     title: '找房',
@@ -38,7 +39,7 @@ class Home extends React.Component {
       selectedTab: this.props.location.pathname
     };
   }
-
+  // 渲染tab栏内容的方法
   renderTabbarItem(){
    return tabItems.map(item=>{
       return (
@@ -68,7 +69,8 @@ class Home extends React.Component {
     
     return (
       <div className="home">
-        <Route path="/home/index" component={Index}></Route>
+        {/* tab路由控制区域 */}
+        <Route path="/home" exact component={Index}></Route>
         <Route path="/home/houselist" component={HouseList}></Route>
         <Route path="/home/news" component={News}></Route>
         <Route path="/home/profile" component={Profile}></Route>
@@ -78,6 +80,7 @@ class Home extends React.Component {
             barTintColor="white"
             noRenderContent={true}
           >
+            {/* 渲染tab栏内容 */}
             {this.renderTabbarItem.call(this)}
           </TabBar>
       </div>
