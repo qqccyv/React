@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
 // import { Button } from 'antd-mobile'
 import 'antd-mobile/dist/antd-mobile.css';
-import './App.css';
 import './assets/fonts/iconfont.css'
+import './App.css';
 
 
 

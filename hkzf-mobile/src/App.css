@@ -2,10 +2,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  touch-action: pan-y;
 }
 
 html,
-bogy {
+body {
   background-color: #fff;
   height: 100%;
 }
