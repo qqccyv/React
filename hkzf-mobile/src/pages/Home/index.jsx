@@ -32,12 +32,29 @@ const tabItems = [
 ]
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      //这里的location只有在初始化的时候才能拿到
-      selectedTab: this.props.location.pathname
-    };
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     //这里的location只有在初始化的时候才能拿到
+  //     selectedTab: this.props.location.pathname
+  //   };
+  // }
+  //利用componentDidUpdate周期函数  在组件更新时也可以获取最新的路由地址
+  // componentDidUpdate(prevProps){
+  //   // console.log(prevProps);
+  //   if(prevProps.location.pathname !== this.props.location.pathname){
+  //     this.setState(()=>{
+  //       return {
+  //         selectedTab: this.props.location.pathname
+  //       }
+  //     })
+  //   }
+    
+  // }
+
+  //将获取pathname设置为一个属性，达到实时更新的目的
+ get getLocationPathname(){
+    return this.props.location.pathname
   }
   // 渲染tab栏内容的方法
   renderTabbarItem(){
@@ -51,11 +68,11 @@ class Home extends React.Component {
         }
         selectedIcon={<i className={`iconfont ${item.icon}`}></i>
         }
-        selected={this.state.selectedTab === item.path}
+        selected={this.getLocationPathname === item.path}
         onPress={() => {
-          this.setState({
-            selectedTab: item.path,
-          });
+          // this.setState({
+          //   selectedTab: item.path,
+          // });
           this.props.history.push(item.path)
         }}
       >
@@ -65,7 +82,7 @@ class Home extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     
     return (
       <div className="home">
