@@ -1,5 +1,6 @@
 import React from 'react'
 import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
+import { getCurrentCity } from '../../../utils/index'
 import nav1 from '../../../assets/images/nav-1.png'
 import nav2 from '../../../assets/images/nav-2.png'
 import nav3 from '../../../assets/images/nav-3.png'
@@ -37,13 +38,9 @@ class Index extends React.Component {
   }
 
   //获取当前城市定位的函数
-  getLocalCity() {
-    var myCity = new window.BMap.LocalCity();
-    myCity.get(async ({ name }) => {
-      const res = await (await fetch(`http://127.0.0.1:8080/area/info?name=${name}`)).json();
-
-      if (res.status === 200) this.setState({ localCity: res.body.label });
-    })
+  async getLocalCity() {
+    const { label } = await getCurrentCity()
+    this.setState({ localCity: label });
   }
   //获取轮播图数据
   async getSwiperList() {
