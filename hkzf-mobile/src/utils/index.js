@@ -1,3 +1,4 @@
+//封装获取当前城市函数
 export const getCurrentCity = ()=>{
   const localCity = JSON.parse(localStorage.getItem('hkzf-city'))
   // console.log(localCity);
