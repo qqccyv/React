@@ -12,3 +12,16 @@ body,
   background-color: #fff;
   height: 100%;
 }
+
+
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}

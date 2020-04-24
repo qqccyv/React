@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import { NavBar } from 'antd-mobile';
 import { List, AutoSizer } from 'react-virtualized';
 import { getCurrentCity } from '../../utils/index.js'
@@ -9,12 +9,21 @@ const indexesMapper = {
 }
 
 class CityList extends React.Component {
-  state = {
+ constructor(props){
+   super(props)
+   this.state = {
     cityListObject: {},
-    cityIndexes: []
+    cityIndexes: [],
+    activeIndex: 0
   }
-  componentDidMount() {
-    this.getCityList()
+  this.listComponent = createRef()
+ }
+ async componentDidMount() {
+   await this.getCityList()
+       // 在获取列表数据后马上计算列表高度，方便移动高度的准确度
+       // 在周期函数中时  因为要确保执行计算方法时，列表数据要已经存在，
+       // 所以为前面的获取列表方法添加了await关键字
+   this.listComponent.current.measureAllRows()
   }
   //获取城市列表数据
   async getCityList() {
@@ -34,7 +43,8 @@ class CityList extends React.Component {
     cityListObject, 
     cityIndexes
    })
-
+   // 在获取列表数据后马上计算列表高度，方便移动高度的准确度
+  //  this.listComponent.current.measureAllRows()
   }
   //对城市列表进行格式化
   parseCityList(arr) {
@@ -72,6 +82,25 @@ class CityList extends React.Component {
       </div>
     )
   }
+
+  //渲染城市序列函数
+  renderCityIndex(){
+    const {activeIndex , cityIndexes } = this.state
+    return cityIndexes.map((item,index)=>{
+      return (
+        <li className="city-index-item" key={item} onClick={this.goTargetRow.bind(this,index)}>
+          <span className={activeIndex===index? "active-index": ''}>{item==='hot'? '热': item.toUpperCase()}</span>
+          </li>
+      )
+    })
+  }
+  //移动到目标行
+  goTargetRow(index){
+    // this.listComponent.current.scrollToRow(index)
+    this.setState({
+      activeIndex: index
+    })
+  }
   //自动获取每行高度
   rowHeight({ index }) {
     const { cityListObject, cityIndexes } = this.state
@@ -91,13 +120,19 @@ class CityList extends React.Component {
         {/* 城市列表区域 */}
         <AutoSizer className="renderCityList">
           {({ height, width }) => <List
+          ref={this.listComponent}
             width={width}
             height={height - 45}
             rowCount={this.state.cityIndexes.length}
             rowHeight={this.rowHeight.bind(this)}
             rowRenderer={this.rowRenderer.bind(this)}
+            scrollToAlignment="start"
+            scrollToIndex={this.state.activeIndex}
           />}
         </AutoSizer>
+        <ul className="city-index">
+          {this.renderCityIndex()}
+        </ul>
       </div>
     )
   }
