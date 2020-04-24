@@ -1,5 +1,6 @@
 import React, { createRef } from 'react'
-import { NavBar } from 'antd-mobile';
+import { NavBar,Toast } from 'antd-mobile';
+import NavHeader from '../../components/NavHeader'
 import { List, AutoSizer } from 'react-virtualized';
 import { getCurrentCity } from '../../utils/index.js'
 import './index.scss'
@@ -7,7 +8,7 @@ const indexesMapper = {
   '#': '当前城市',
   hot: '热门城市'
 }
-
+const hasHouseCities = ['北京','上海','广州','深圳']
 class CityList extends React.Component {
  constructor(props){
    super(props)
@@ -78,7 +79,7 @@ class CityList extends React.Component {
     return (
       <div className="city" key={key} style={style}>
         <div className="title">{this.parseIndex(lowwerTitle)}</div>
-        {cityListObject[lowwerTitle].map(i => <div className="name" key={i.value}>{i.label}</div>)}
+        {cityListObject[lowwerTitle].map(i => <div className="name" key={i.value} onClick={this.cityChange.bind(this,i)}>{i.label}</div>)}
       </div>
     )
   }
@@ -107,16 +108,20 @@ class CityList extends React.Component {
 
     return 36 + 50 * cityListObject[cityIndexes[index]].length
   }
+  //选择选定城市
+  cityChange({label,value}){
+    // console.log(label,value);
+    if(hasHouseCities.includes(label)){
+      localStorage.setItem('hkzf-city',JSON.stringify({label,value}))
+      this.props.history.go(-1)
+    } else Toast.info('该城市没有房源信息',1,null,false)
+    
+  }
   render() {
     return (
       <div className="cityList">
         {/* 顶部导航栏 */}
-        <NavBar
-          className="navBar"
-          mode="light"
-          icon={<i className="iconfont icon-back"></i>}
-          onLeftClick={() => this.props.history.go(-1)}
-        >城市选择</NavBar>
+        <NavHeader>城市选择</NavHeader>
         {/* 城市列表区域 */}
         <AutoSizer className="renderCityList">
           {({ height, width }) => <List
