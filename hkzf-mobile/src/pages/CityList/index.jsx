@@ -1,5 +1,5 @@
 import React, { createRef } from 'react'
-import { NavBar,Toast } from 'antd-mobile';
+import { Toast } from 'antd-mobile';
 import NavHeader from '../../components/NavHeader'
 import { List, AutoSizer } from 'react-virtualized';
 import { getCurrentCity } from '../../utils/index.js'
@@ -86,11 +86,12 @@ class CityList extends React.Component {
 
   //渲染城市序列函数
   renderCityIndex(){
-    const {activeIndex , cityIndexes } = this.state
-    return cityIndexes.map((item,index)=>{
+    const {activeIndex , cityIndexes: [...cityIndexes] } = this.state
+    cityIndexes[1] = '热'
+    return cityIndexes.length && cityIndexes.map((item,index)=>{
       return (
         <li className="city-index-item" key={item} onClick={this.goTargetRow.bind(this,index)}>
-          <span className={activeIndex===index? "active-index": ''}>{item==='hot'? '热': item.toUpperCase()}</span>
+          <span className={activeIndex===index? "active-index": ''}>{item.toUpperCase()}</span>
           </li>
       )
     })
