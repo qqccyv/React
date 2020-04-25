@@ -88,7 +88,7 @@ class CityList extends React.Component {
   renderCityIndex(){
     const {activeIndex , cityIndexes: [...cityIndexes] } = this.state
     cityIndexes[1] = '热'
-    return cityIndexes.length && cityIndexes.map((item,index)=>{
+    return cityIndexes.length>2 && cityIndexes.map((item,index)=>{
       return (
         <li className="city-index-item" key={item} onClick={this.goTargetRow.bind(this,index)}>
           <span className={activeIndex===index? "active-index": ''}>{item.toUpperCase()}</span>
@@ -118,6 +118,13 @@ class CityList extends React.Component {
     } else Toast.info('该城市没有房源信息',1,null,false)
     
   }
+  //列表滚动切换序列高亮
+  onRowsRendered({startIndex}){
+
+  startIndex !== this.state.activeIndex &&  this.setState({
+    activeIndex: startIndex
+  })
+  }
   render() {
     return (
       <div className="cityList">
@@ -134,6 +141,7 @@ class CityList extends React.Component {
             rowRenderer={this.rowRenderer.bind(this)}
             scrollToAlignment="start"
             scrollToIndex={this.state.activeIndex}
+            onRowsRendered = {this.onRowsRendered.bind(this)}
           />}
         </AutoSizer>
         <ul className="city-index">
