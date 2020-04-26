@@ -34,7 +34,7 @@ export default class MapComponent extends React.Component {
     // 创建地址解析器实例     
     var myGeo = new BMap.Geocoder();
     // 将地址解析结果显示在地图上，并调整地图视野    
-    myGeo.getPoint(localCity.label, (point) => {
+    myGeo.getPoint(localCity.label, async (point) => {
       if (point) {
         //挂载地图
         map.centerAndZoom(point, 11);
@@ -46,28 +46,50 @@ export default class MapComponent extends React.Component {
         map.addControl(new BMap.NavigationControl());
         map.addControl(new BMap.ScaleControl());
 
-        //地图覆盖物
-        var opts = {
-          position: point,    // 指定文本标注所在的地理位置
-          offset: new BMap.Size(-35, -35)    //设置文本偏移量
-        }
-        var label = new BMap.Label("", opts);  // 创建文本标注对象
+        // 获取当前所有区域的所有房源信息
 
-        //设置覆盖物HTML结构
-        label.setContent(
-          `<div class="${styles.bubble}">` +
-          `<p class="${styles.name}">船山区</p>` +
-          `<p>99套</p>` +
-          '</div>'
-        );
-        
-        //设置覆盖物样式
-        label.setStyle(labelStyle);
+        const res = await (await fetch(`http://localhost:8080/area/map?id=${localCity.value}`)).json()
 
-        //挂载覆盖物
-        map.addOverlay(label);
+        res.body.forEach(({ coord: { latitude, longitude }, label: areaName, count,value }) => {
+          // console.log(i);
+          const areaPoint = new BMap.Point(longitude, latitude)
+          //地图覆盖物
+          var opts = {
+            position: areaPoint,    // 指定文本标注所在的地理位置
+            offset: new BMap.Size(-35, -35)    //设置文本偏移量
+          }
+          var label = new BMap.Label("", opts);  // 创建文本标注对象
+
+          //设置覆盖物HTML结构
+          label.setContent(
+            `<div class="${styles.bubble}">` +
+            `<p class="${styles.name}">${areaName}</p>` +
+            `<p>${count}套</p>` +
+            '</div>'
+          );
+
+          //设置覆盖物样式
+          label.setStyle(labelStyle);
+
+          //添加点击事件
+          label.addEventListener('click',()=>{
+            console.log(value);
+            //重新设置地图中心放大坐标和放大倍数
+            map.centerAndZoom(areaPoint, 13);
+            //延时异步清除目前地图上的覆盖物，防止百度API本身报错！
+            setTimeout(()=>{
+              map.clearOverlays()
+            },0)
+            
+          })
+
+          //挂载覆盖物
+          map.addOverlay(label);
+        })
+
       }
     },
+      //坐标反向解析，地址再确认
       localCity.label);
     //挂载地图
     // map.centerAndZoom(point, 15);
