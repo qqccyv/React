@@ -4,3 +4,22 @@
 #container {
   height: calc(100% - 45px);
 }
+/* 圆圈覆盖物样式： */
+.bubble {
+  width: 70px;
+  height: 70px;
+  line-height: 1;
+  display: inline-block;
+  position: absolute;
+  border-radius: 100%;
+  background-color: rgb(233, 168, 26);
+  color: #fff;
+  font-weight: bold;
+  border: 1px solid rgba(233, 219, 26, .5);
+  text-align: center;
+  cursor: pointer;
+}
+
+.name {
+  padding: 18px 0 6px 0;
+}
