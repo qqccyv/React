@@ -3,12 +3,13 @@ import React from 'react'
 import {withRouter} from 'react-router-dom'
 import propTypes  from 'prop-types'
 import { NavBar,Icon } from 'antd-mobile'
-import './index.scss'
+// import './index.scss'
+import Styles from './NavHeader.module.scss'
 
 function NavHeader({children,onLeftClick,history}) {
   const defaultLeftClick = () => history.go(-1)
   return <NavBar
-    className="navBar"
+    className={Styles.navBar}
     mode="light"
     icon={<Icon type="left" />}
     onLeftClick={onLeftClick || defaultLeftClick}
