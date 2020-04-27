@@ -1,0 +1,17 @@
+.navleft .logo {
+  padding: 20px 10px;
+  line-height: 90px;
+  background-color: #001529;
+}
+.navleft .logo img {
+  height: 45px;
+}
+.navleft .logo h1 {
+  vertical-align: middle;
+  display: inline-block;
+  margin: 0 0 0 15px;
+  color: #fff;
+}
+.navleft .menu {
+  width: 100%;
+}

@@ -1,0 +1,7 @@
+.container .nav-left {
+  min-width: 180px;
+  height: calc(100vh);
+}
+.container .main {
+  height: calc(100vh);
+}
