@@ -6,6 +6,10 @@ import nav2 from '../../../assets/images/nav-2.png'
 import nav3 from '../../../assets/images/nav-3.png'
 import nav4 from '../../../assets/images/nav-4.png'
 import './index.scss'
+import BASE_URL from '../../../utils/util';
+import API from '../../../utils/API';
+import SearchHeader from '../../../components/SearchHeader';
+
 
 const navList = [
   {
@@ -44,7 +48,7 @@ class Index extends React.Component {
   }
   //获取轮播图数据
   async getSwiperList() {
-    let res = await (await fetch('http://127.0.0.1:8080/home/swiper')).json()
+    let res = await API.get('/home/swiper')
     // console.log(res);
     if (res.status === 200) this.setState(() => {
       return {
@@ -114,7 +118,7 @@ class Index extends React.Component {
         style={{ display: 'inline-block', width: '100%', height: 212 }}
       >
         <img
-          src={`http://127.0.0.1:8080${val.imgSrc}`}
+          src={`${BASE_URL}${val.imgSrc}`}
           alt=""
           style={{ width: '100%', verticalAlign: 'top' }}
         />
@@ -183,7 +187,8 @@ class Index extends React.Component {
     return (
       <div className="index">
         {/* 顶部搜索栏 */}
-        {this.renderSearchBar()}
+        {/* {this.renderSearchBar()} */}
+        <SearchHeader localCity={this.state.localCity} ></SearchHeader>
         {/* 轮播图 */}
         <Carousel
           autoplay
