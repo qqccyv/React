@@ -20,7 +20,7 @@ class CityList extends React.Component {
   this.listComponent = createRef()
  }
  async componentDidMount() {
-   await this.getCityList()
+  await  this.getCityList()
        // 在获取列表数据后马上计算列表高度，方便移动高度的准确度
        // 在周期函数中时  因为要确保执行计算方法时，列表数据要已经存在，
        // 所以为前面的获取列表方法添加了await关键字
