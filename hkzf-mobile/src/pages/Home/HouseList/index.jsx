@@ -1,9 +1,25 @@
 import React from 'react'
-
+import SearchHeader from '../../../components/SearchHeader'
+import { getCurrentCity } from '../../../utils'
+import './index.scss'
 class HouseList extends React.Component {
-  render(){
+  state = {
+    localCity: '北京'
+  }
+  componentDidMount() {
+    this.getLocalCity()
+  }
+
+  //获取当前城市定位的函数
+  async getLocalCity() {
+    const { label } = await getCurrentCity()
+    this.setState({ localCity: label });
+  }
+  render() {
     return (
-      <div>这里是搜房页面</div>
+      <div className="houselist">
+        <SearchHeader localCity={this.state.localCity}></SearchHeader>
+      </div>
     )
   }
 }
