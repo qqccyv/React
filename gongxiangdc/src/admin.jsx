@@ -5,8 +5,9 @@ import './style/common.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import NavLeft from './components/NavLeft'
-export default class Admin extends React.Component {
+import Home from './pages/Home';
 
+export default class Admin extends React.Component {
 
   render(){
     return (
@@ -16,7 +17,9 @@ export default class Admin extends React.Component {
           </Col>
           <Col span={20} className="main">
             <Header></Header>
-            <Row className="content">content</Row>
+            <Row className="content">
+              <Home></Home>
+            </Row>
             <Footer></Footer>
           </Col>
         </Row>

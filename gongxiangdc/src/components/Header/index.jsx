@@ -1,5 +1,5 @@
 import React from 'react'
-import './index.css'
+import './index.less'
 import { Row, Col } from 'antd'
 import Util from '../../utils/utils'
 import Axios from '../../axios/index'
