@@ -1,0 +1,20 @@
+.houselist {
+  height: calc(100vh);
+  background-color: #F6f5f6;
+}
+.houselist :global(.icon-back) {
+  // line-height: 45px;
+  padding: 12px 0 0 12px;
+}
+ .searchHeader {
+  display: flex;
+  height: 45px;
+  // padding: 20px 0 0 12px;
+}
+.searchInput {
+  position: static;
+}
+
+.houselist i:global(.icon-map){
+  color: green;
+}

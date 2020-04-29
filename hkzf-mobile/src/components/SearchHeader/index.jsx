@@ -3,9 +3,9 @@ import { withRouter } from "react-router-dom"
 import { Flex } from "antd-mobile"
 import styles from './SearchHeader.module.scss'
 import '../../assets/fonts/iconfont.css'
-function SearchHeader({ history,localCity }) {
+function SearchHeader({ history,localCity,className }) {
   return (
-    <Flex className={styles['search-box']}>
+    <Flex className={[styles['search-box'],...className? [className]:[]].join(' ')}>
       {/* 左侧白色区域 */}
       <Flex className={styles.search}>
         {/* 位置 */}
