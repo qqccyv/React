@@ -9,6 +9,7 @@ import API from '../../../utils/API'
 import HouseItem from '../../../components/HouseItem'
 import { List, AutoSizer, WindowScroller, InfiniteLoader } from 'react-virtualized'
 import BASE_URL from '../../../utils/util'
+import Sticky from '../../../components/Sticky'
 
 
 class HouseList extends React.Component {
@@ -87,7 +88,9 @@ class HouseList extends React.Component {
           <SearchHeader localCity={this.state.localCity} className={styles.searchInput}></SearchHeader>
         </div>
         {/* 筛选组件 */}
-        <Filter onFilter={this.onFilter}></Filter>
+        <Sticky>
+          <Filter onFilter={this.onFilter}></Filter>
+        </Sticky>
 
         <div className={styles.houseItem}>
 
