@@ -18,3 +18,12 @@
 .houselist i:global(.icon-map){
   color: green;
 }
+.houseItem {
+  padding: 0 15px;
+}
+
+.loading div {
+  height: 100px;
+  width: 100%;
+  background-color: #ccc;
+}
