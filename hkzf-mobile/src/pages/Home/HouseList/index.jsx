@@ -16,7 +16,8 @@ class HouseList extends React.Component {
   state = {
     localCity: '北京',
     count: 0,
-    list: []
+    list: [],
+    filter: {}
   }
   data = {
     filter: {}
@@ -30,13 +31,15 @@ class HouseList extends React.Component {
     // 拿到当前城市的 ID。
     const { value: cityId } = await getCurrentCity();
 
-    const { body } = await API.get('/houses', { cityId, ...this.data.filters, start: 1, end: 20 });
+    const { body } = await API.get('/houses', { cityId, ...this.state.filter, start: 1, end: 20 });
 
     this.setState({ ...body });
   }
 
   onFilter(filters) {
-    this.data.filters = filters;
+    this.setState({
+      filter : filters
+    })
     this.getHouseList();
   }
 
@@ -70,7 +73,7 @@ class HouseList extends React.Component {
     // 拿到当前城市的 ID。
     const { value: cityId } = await getCurrentCity();
 
-    const { body } = await API.get('/houses', { cityId, ...this.data.filter, start: startIndex + 1, end: stopIndex + 1 });
+    const { body } = await API.get('/houses', { cityId, ...this.state.filter, start: startIndex + 1, end: stopIndex + 1 });
 
     this.setState((prevState) => { return { list: [...prevState.list, ...body.list] } }, () => {
       console.log(this.state.list);
@@ -89,7 +92,7 @@ class HouseList extends React.Component {
         </div>
         {/* 筛选组件 */}
         <Sticky>
-          <Filter onFilter={this.onFilter}></Filter>
+          <Filter onFilter={this.onFilter.bind(this)}></Filter>
         </Sticky>
 
         <div className={styles.houseItem}>
