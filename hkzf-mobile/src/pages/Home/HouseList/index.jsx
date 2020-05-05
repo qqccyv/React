@@ -10,6 +10,8 @@ import HouseItem from '../../../components/HouseItem'
 import { List, AutoSizer, WindowScroller, InfiniteLoader } from 'react-virtualized'
 import BASE_URL from '../../../utils/util'
 import Sticky from '../../../components/Sticky'
+import { Toast } from 'antd-mobile'
+import NoHouse from '../../../components/NoHouse'
 
 
 class HouseList extends React.Component {
@@ -17,7 +19,8 @@ class HouseList extends React.Component {
     localCity: '北京',
     count: 0,
     list: [],
-    filter: {}
+    filter: {},
+    isLoading: false
   }
   data = {
     filter: {}
@@ -27,25 +30,72 @@ class HouseList extends React.Component {
     this.setState({ localCity });
   }
 
-  async getHouseList() {
-    // 拿到当前城市的 ID。
-    const { value: cityId } = await getCurrentCity();
+  // async getHouseList() {
+  //   // 拿到当前城市的 ID。
+  //   const { value: cityId } = await getCurrentCity();
 
-    const { body } = await API.get('/houses', { cityId, ...this.state.filter, start: 1, end: 20 });
+  //   const { body } = await API.get('/houses', { cityId, ...this.state.filter, start: 1, end: 20 });
 
-    this.setState({ ...body });
-  }
+  //   this.setState({ ...body });
+  // }
 
   onFilter(filters) {
     this.setState({
-      filter : filters
+      filter: filters
     })
-    this.getHouseList();
+    this.loadMoreRows({ startIndex: 0, stopIndex: 19, toast: Toast });
   }
 
   componentWillMount() {
+    this.Toast = Toast
     this.getCity();
-    this.getHouseList()
+    this.loadMoreRows({ startIndex: 0, stopIndex: 19, toast: Toast })
+  }
+
+  // 渲染房屋页面
+  renderHouse = () => {
+    const { count ,isLoading} = this.state
+
+   if(!isLoading){
+    return count?  (
+
+      <div className={styles.houseItem}>
+
+        <InfiniteLoader
+          isRowLoaded={this.isRowLoaded.bind(this)}
+          loadMoreRows={this.loadMoreRows.bind(this)}
+          rowCount={count}>
+          {({ onRowsRendered, registerChild }) => {
+            return (
+              <WindowScroller>
+                {({ height, scrollTop, isScrolling }) => {
+                  return (
+                    <AutoSizer>
+                      {({ width }) => {
+                        return <List
+                          ref={registerChild}
+                          onRowsRendered={onRowsRendered}
+                          autoHeight
+                          scrollTop={scrollTop}
+                          width={width}
+                          height={height}
+                          isScrolling={isScrolling}
+                          rowCount={count}
+                          rowHeight={120}
+                          rowRenderer={this.renderHouseList}
+                        />
+                      }}
+                    </AutoSizer>
+                  )
+                }}
+              </WindowScroller>
+            )
+          }}
+        </InfiniteLoader>
+
+      </div>
+    ) : <NoHouse></NoHouse>
+   }
   }
   // 渲染房屋列表
   renderHouseList = ({
@@ -67,22 +117,26 @@ class HouseList extends React.Component {
   }
 
   //  加载更多房屋列表
-  async loadMoreRows({ startIndex, stopIndex }) {
+  async loadMoreRows({ startIndex, stopIndex, toast }) {
     console.log(startIndex, stopIndex);
 
     // 拿到当前城市的 ID。
     const { value: cityId } = await getCurrentCity();
-
+    toast && toast.loading('加载中..', 0, null, false)
+    this.setState({
+      isLoading: true
+    })
     const { body } = await API.get('/houses', { cityId, ...this.state.filter, start: startIndex + 1, end: stopIndex + 1 });
-
-    this.setState((prevState) => { return { list: [...prevState.list, ...body.list] } }, () => {
+    toast && toast.hide()
+    toast && body.count && toast.info(`共找到${body.count}套房源`, 1)
+    this.setState((prevState) => { return { list: [...prevState.list, ...body.list], count: body.count ,isLoading: false} }, () => {
       console.log(this.state.list);
 
     });
+
   }
 
   render() {
-    const { count } = this.state
     return (
       <div className={styles.houselist}>
         {/* 头部搜索栏 */}
@@ -94,43 +148,9 @@ class HouseList extends React.Component {
         <Sticky>
           <Filter onFilter={this.onFilter.bind(this)}></Filter>
         </Sticky>
+        {/* 房屋列表区域 */}
+        {this.renderHouse()}
 
-        <div className={styles.houseItem}>
-
-          {/* 房屋列表区域 */}
-          <InfiniteLoader
-            isRowLoaded={this.isRowLoaded.bind(this)}
-            loadMoreRows={this.loadMoreRows.bind(this)}
-            rowCount={count}>
-            {({ onRowsRendered, registerChild }) => {
-              return (
-                <WindowScroller>
-                  {({ height, scrollTop, isScrolling }) => {
-                    return (
-                      <AutoSizer>
-                        {({ width }) => {
-                          return <List
-                            ref={registerChild}
-                            onRowsRendered={onRowsRendered}
-                            autoHeight
-                            scrollTop={scrollTop}
-                            width={width}
-                            height={height}
-                            isScrolling={isScrolling}
-                            rowCount={count}
-                            rowHeight={120}
-                            rowRenderer={this.renderHouseList}
-                          />
-                        }}
-                      </AutoSizer>
-                    )
-                  }}
-                </WindowScroller>
-              )
-            }}
-          </InfiniteLoader>
-
-        </div>
       </div>
     )
   }
