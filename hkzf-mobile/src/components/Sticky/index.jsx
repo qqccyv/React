@@ -10,7 +10,7 @@ export default class Sticky extends Component {
 
     componentDidMount() {
         const { height } = this.boxElement.getBoundingClientRect();
-        this.boxElement.style = `height:${ height }px`;
+        this.boxElement.style = `height:${height}px`;
         window.addEventListener('scroll', this.scrollListener = e => {
             const { top } = this.boxElement.getBoundingClientRect();
             // top < 1 ? fixedElement.classList.add(styles.fixed) : fixedElement.classList.remove(styles.fixed);
@@ -19,7 +19,7 @@ export default class Sticky extends Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.scrollListene);
+        window.removeEventListener('scroll', this.scrollListener);
     }
 
     render() {

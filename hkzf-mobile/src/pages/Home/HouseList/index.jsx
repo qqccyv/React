@@ -43,6 +43,7 @@ class HouseList extends React.Component {
     this.setState({
       filter: filters
     })
+    window.scrollTo(0,0)
     this.loadMoreRows({ startIndex: 0, stopIndex: 19, toast: Toast });
   }
 

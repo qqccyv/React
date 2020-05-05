@@ -18,3 +18,7 @@
   z-index: 3;
   background-color: #fff;
 }
+
+.fixed {
+  overflow: hidden;
+}

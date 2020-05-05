@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Spring } from 'react-spring/renderprops'
 
 import FilterTitle from '../FilterTitle'
 import FilterPicker from '../FilterPicker'
@@ -87,7 +88,7 @@ export default class Filter extends Component {
     //这里接收到openType  可以复用点击标题高亮的一部分逻辑，达到关闭选择框 同时关闭高亮的目的
 
     // 判断其他选项当前选项是否高亮
-    const { titleSelectedList ,selectedFilterData } = this.state
+    const { titleSelectedList, selectedFilterData } = this.state
     let newTitleSelectedList = { ...titleSelectedList }
     const selectedFilter = selectedFilterData[openType]
     // 其他标题
@@ -133,24 +134,24 @@ export default class Filter extends Component {
       [openType]: value
     }
     console.log(newSelectedFilterData);
-    
-    const {area,mode,more,price} = newSelectedFilterData
+
+    const { area, mode, more, price } = newSelectedFilterData
     const filters = {
-      [area[0]]: area[2]==='null'? area[1] : area[2] || 'null',
+      [area[0]]: area[2] === 'null' ? area[1] : area[2] || 'null',
       rentType: mode[0],
       more: more.join(','),
       price: price[0]
     }
-    console.log(filters);
+    // console.log(filters);
     this.props.onFilter(filters)
     // filters.area = area[0] === 'subway'? 
     this.setState({
       openType: '',
       selectedFilterData: newSelectedFilterData,
       titleSelectedList: newTitleSelectedList
-    },()=>{
-      console.log(this.state.selectedFilterData);
-      
+    }, () => {
+      // console.log(this.state.selectedFilterData);
+
     })
   }
 
@@ -187,29 +188,45 @@ export default class Filter extends Component {
   }
 
   //渲染筛选模块
-  renderFilterMore(){
-    const {openType,filterCondition: { area, price, rentType, subway,...data }, selectedFilterData} = this.state
+  renderFilterMore() {
+    const { openType, filterCondition: { area, price, rentType, subway, ...data }, selectedFilterData } = this.state
     // console.log(data);
-    
-    if(openType !== 'more'){
+
+    if (openType !== 'more') {
       return null
     }
     const selectedFilter = selectedFilterData['more']
-    return <FilterMore key={openType} selectedFilter={selectedFilter} data={data} openType={openType} onSave={this.onSave}  onCancel={this.onCancel}  />
+    return <FilterMore key={openType} selectedFilter={selectedFilter} data={data} openType={openType} onSave={this.onSave} onCancel={this.onCancel} />
   }
 
 
+  // 判断当前是否处于筛选界面，是否需要禁止列表滑动
+  fixedBody() {
+    const { openType } = this.state
+    const body = document.querySelector('body')
+    body.className = openType !== '' ? styles.fixed : ''
+  }
 
+  // 渲染遮罩层
+  renderMask() {
+    const { openType } = this.state
+    const isShow = openType === 'area' || openType === 'mode' || openType === 'price'
+    return <Spring
+      from={{ opacity: 0 }}
+      to={{ opacity: isShow?  1 : 0 }}>
+      {(style) => style.opacity ? <div style={style} className={styles.mask} onClick={() => this.onCancel(openType)} /> : null}
+    </Spring>
+
+  }
 
   render() {
-    const { titleSelectedList, openType } = this.state
+    const { titleSelectedList } = this.state
+    this.fixedBody()
     return (
       <div className={styles.root}>
         {/* 前三个菜单的遮罩层 */}
         {/* <div className={styles.mask} /> */}
-        {(openType === 'area' || openType === 'mode' || openType === 'price') ?
-          <div className={styles.mask} onClick={()=>this.onCancel(openType)} /> : null
-        }
+        {this.renderMask()}
         <div className={styles.content}>
           {/* 标题栏 */}
           <FilterTitle onClick={this.titleOnclick} titleSelectedList={titleSelectedList} />
