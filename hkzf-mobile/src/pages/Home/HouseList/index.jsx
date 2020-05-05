@@ -51,7 +51,7 @@ class HouseList extends React.Component {
     isScrolling, // The List is currently being scrolled
     isVisible, // This row is visible within the List (eg it is not an overscanned row)
   }) => {
-    const { houseImg, houseCode, ...item } = this.state.list[index];
+    const { houseImg, houseCode, ...item } = this.state.list[index] || {};
     item.src = BASE_URL + houseImg;
     // console.log(house);
 
