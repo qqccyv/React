@@ -110,7 +110,7 @@ class HouseList extends React.Component {
     item.src = BASE_URL + houseImg;
     // console.log(house);
 
-    return houseImg ? <HouseItem key={key} style={style} {...item} /> : <div key={key} className={styles.loading}><div></div></div>
+    return houseImg ? <HouseItem onClick={()=>this.props.history.push(`/detail/${houseCode}`)} key={key} style={style} {...item} /> : <div key={key} className={styles.loading}><div></div></div>
   }
   // 判断当前选项是否加载完成
   isRowLoaded({ index }) {

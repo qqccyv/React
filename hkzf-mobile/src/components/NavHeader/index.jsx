@@ -6,13 +6,14 @@ import { NavBar,Icon } from 'antd-mobile'
 // import './index.scss'
 import Styles from './NavHeader.module.scss'
 
-function NavHeader({children,onLeftClick,history}) {
+function NavHeader({children,onLeftClick,history,className,rightContent}) {
   const defaultLeftClick = () => history.go(-1)
   return <NavBar
-    className={Styles.navBar}
+    className={[Styles.navBar,className || ''].join(' ')}
     mode="light"
     icon={<Icon type="left" />}
     onLeftClick={onLeftClick || defaultLeftClick}
+    rightContent={rightContent}
   >{children}</NavBar>
 }
 NavHeader.propTypes = {

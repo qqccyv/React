@@ -12,7 +12,7 @@ import './App.css';
 import Home from './pages/Home'
 import CityList from './pages/CityList'
 import MapComponent from './pages/Map'
-
+import HouseDatil from './pages/HouseDetail'
 function App() {
   return (
     <Router>
@@ -22,6 +22,7 @@ function App() {
       <Route path="/home" component={Home}></Route>
       <Route path="/citylist" component={CityList}></Route>
       <Route path="/map" component={MapComponent}></Route>
+      <Route path="/detail/:id" component={HouseDatil}></Route>
     </div>
     </Router>
   );

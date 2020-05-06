@@ -211,11 +211,11 @@ export default class Filter extends Component {
   renderMask() {
     const { openType } = this.state
     const isShow = openType === 'area' || openType === 'mode' || openType === 'price'
-    return <Spring
+    return (<Spring
       from={{ opacity: 0 }}
       to={{ opacity: isShow?  1 : 0 }}>
       {(style) => style.opacity ? <div style={style} className={styles.mask} onClick={() => this.onCancel(openType)} /> : null}
-    </Spring>
+    </Spring>)
 
   }
 
