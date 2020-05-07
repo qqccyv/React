@@ -69,11 +69,13 @@ export default class HouseDetail extends Component {
     const { body } = await API.get(`/houses/${id}`)
     this.setState({
       houseInfo: body
-    })
+    },this.renderMap(body.community, body.coord))
     console.log(body);
-    this.renderMap(body.community, body.coord)
+    
   }
   componentDidMount() {
+    // 置顶
+    window.scrollTo(0,0)
     this.getHouseDetail()
    
 
