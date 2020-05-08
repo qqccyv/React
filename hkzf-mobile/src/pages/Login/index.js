@@ -7,20 +7,19 @@ import NavHeader from '../../components/NavHeader'
 
 import styles from './index.module.css'
 import API from '../../utils/API'
+
 // 导入withFormik
 import { withFormik ,Form,Field ,ErrorMessage} from 'formik'
 
 import * as Yup from 'yup'
+import Auth from '../../utils/Auth'
 // 验证规则：
 const REG_UNAME = /^[a-zA-Z_\d]{5,8}$/
 const REG_PWD = /^[a-zA-Z_\d]{5,12}$/
 const TOKEN_KEY = 'HKZF_TOKEN'
 class Login extends Component {
 
-  // state = {
-  //   username: '',
-  //   password: ''
-  // }
+ 
   // registe = async () => {
   //   const { username, password } = this.state
   // const res = await API.get('http://localhost:3000/login')
@@ -59,8 +58,8 @@ class Login extends Component {
   // }
 
   render() {
-    const { values, handleSubmit, handleChange, handleBlur , errors, touched } = this.props
-    console.log(errors, touched );
+    // const { values, handleSubmit, handleChange, handleBlur , errors, touched } = this.props
+    // console.log(errors, touched );
     
     return (
       <div className={styles.root}>
@@ -131,21 +130,22 @@ Login = withFormik({
     // 获取账号和密码
     const { username, password } = values
 
-    console.log('表单提交了', username, password)
+    // console.log('表单提交了', username, password)
     // 发送请求
     const res = await API.post('/user/login', {
       username,
       password
     })
 
-    // console.log('登录结果：', res)
     
-    const { status, body, description } = res.data
+    const { status, body, description } = res
 
     if (status === 200) {
       // 登录成功
-      localStorage.setItem(TOKEN_KEY, body.token)
-
+      // localStorage.setItem(TOKEN_KEY, body.token)
+      // 利用封装的方法保存token
+      Auth.setToken(body.token)
+      
       // 注意：无法在该方法中，通过 this 来获取到路由信息
       // 所以，需要通过 第二个对象参数中获取到 props 来使用 props
       props.history.go(-1)

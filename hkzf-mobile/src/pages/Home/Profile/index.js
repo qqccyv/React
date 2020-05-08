@@ -7,6 +7,9 @@ import { Grid, Button } from 'antd-mobile'
 
 import styles from './index.module.css'
 import BASE_URL from '../../../utils/util'
+import Auth from '../../../utils/Auth'
+import API from '../../../utils/API'
+
 
 // 菜单数据
 const menus = [
@@ -26,6 +29,20 @@ const menus = [
 const DEFAULT_AVATAR = BASE_URL + '/img/profile/avatar.png'
 
 export default class Profile extends Component {
+  state = {
+    isLogin: Auth.isToken,
+  }
+  componentDidMount(){
+    this.getUserInfo()
+  }
+ async getUserInfo(){
+    if(!Auth.isToken){
+      return
+    }
+    const res = await API.get('/user',false,true)
+    console.log(res);
+    
+  }
   render() {
     const { history } = this.props
 
@@ -56,9 +73,19 @@ export default class Profile extends Component {
                   </span>
                 </div>
               </> */}
-
-              {/* 未登录展示： */}
-              <div className={styles.edit}>
+              {
+              Auth.isToken ? 
+              <>
+                <div className={styles.auth}>
+                  <span onClick={this.logout}>退出</span>
+                </div>
+                <div className={styles.edit}>
+                  编辑个人资料
+                  <span className={styles.arrow}>
+                    <i className="iconfont icon-arrow" />
+                  </span>
+                </div>
+              </>: <div className={styles.edit}>
                 <Button
                   type="primary"
                   size="small"
@@ -68,6 +95,18 @@ export default class Profile extends Component {
                   去登录
                 </Button>
               </div>
+            }
+              {/* 未登录展示： */}
+              {/* <div className={styles.edit}>
+                <Button
+                  type="primary"
+                  size="small"
+                  inline
+                  onClick={() => history.push('/login')}
+                >
+                  去登录
+                </Button>
+              </div> */}
             </div>
           </div>
         </div>
