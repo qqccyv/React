@@ -16,7 +16,7 @@ import Auth from '../../utils/Auth'
 // 验证规则：
 const REG_UNAME = /^[a-zA-Z_\d]{5,8}$/
 const REG_PWD = /^[a-zA-Z_\d]{5,12}$/
-const TOKEN_KEY = 'HKZF_TOKEN'
+// const TOKEN_KEY = 'HKZF_TOKEN'
 class Login extends Component {
 
  

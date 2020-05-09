@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { Link } from 'react-router-dom'
-import { Grid, Button } from 'antd-mobile'
+import { Grid, Button, Toast, Modal } from 'antd-mobile'
 
 
 
@@ -10,7 +10,7 @@ import BASE_URL from '../../../utils/util'
 import Auth from '../../../utils/Auth'
 import API from '../../../utils/API'
 
-
+const alert = Modal.alert;
 // 菜单数据
 const menus = [
   { id: 1, name: '我的收藏', iconfont: 'icon-coll', to: '/favorate' },
@@ -31,20 +31,57 @@ const DEFAULT_AVATAR = BASE_URL + '/img/profile/avatar.png'
 export default class Profile extends Component {
   state = {
     isLogin: Auth.isToken,
+    avatar: '',
+    nickname: ''
   }
-  componentDidMount(){
+  componentDidMount() {
     this.getUserInfo()
   }
- async getUserInfo(){
-    if(!Auth.isToken){
+   getUserInfo= async () => {
+    if (!Auth.isToken) {
       return
     }
-    const res = await API.get('/user',false,true)
-    console.log(res);
-    
+    const res = await API.get('/user')
+    // console.log(res);
+    if (res.status === 200) {
+      this.setState({
+        nickname: res.body.nickname,
+        avatar: BASE_URL + res.body.avatar
+      })
+    } else {
+      Toast.info('请重新登录')
+      this.setState({
+        isLogin: false,
+        avatar: '',
+        nickname: ''
+      })
+      Auth.removeToken()
+    }
+
+  }
+
+  // 退出
+  logout = () => {
+    alert('提示', '您确定要退出吗?', [
+      { text: '取消', onPress: () => console.log('取消退出') },
+      {
+        text: '退出', onPress: async () => {
+           await API.post('/user/logout')
+          // console.log(res);
+          Auth.removeToken()
+          this.setState({
+            isLogin: false,
+            avatar: '',
+            nickname: ''
+          })
+
+        }
+      },
+    ])
   }
   render() {
     const { history } = this.props
+    const { avatar, nickname,isLogin } = this.state
 
     return (
       <div className={styles.root}>
@@ -57,10 +94,10 @@ export default class Profile extends Component {
           />
           <div className={styles.info}>
             <div className={styles.myIcon}>
-              <img className={styles.avatar} src={DEFAULT_AVATAR} alt="icon" />
+              <img className={styles.avatar} src={avatar || DEFAULT_AVATAR} alt="icon" />
             </div>
             <div className={styles.user}>
-              <div className={styles.name}>游客</div>
+              <div className={styles.name}>{nickname || '游客'}</div>
               {/* 登录后展示： */}
               {/* <>
                 <div className={styles.auth}>
@@ -74,28 +111,28 @@ export default class Profile extends Component {
                 </div>
               </> */}
               {
-              Auth.isToken ? 
-              <>
-                <div className={styles.auth}>
-                  <span onClick={this.logout}>退出</span>
-                </div>
-                <div className={styles.edit}>
-                  编辑个人资料
+                isLogin ?
+                  <>
+                    <div className={styles.auth}>
+                      <span onClick={this.logout}>退出</span>
+                    </div>
+                    <div className={styles.edit}>
+                      编辑个人资料
                   <span className={styles.arrow}>
-                    <i className="iconfont icon-arrow" />
-                  </span>
-                </div>
-              </>: <div className={styles.edit}>
-                <Button
-                  type="primary"
-                  size="small"
-                  inline
-                  onClick={() => history.push('/login')}
-                >
-                  去登录
+                        <i className="iconfont icon-arrow" />
+                      </span>
+                    </div>
+                  </> : <div className={styles.edit}>
+                    <Button
+                      type="primary"
+                      size="small"
+                      inline
+                      onClick={() => history.push('/login')}
+                    >
+                      去登录
                 </Button>
-              </div>
-            }
+                  </div>
+              }
               {/* 未登录展示： */}
               {/* <div className={styles.edit}>
                 <Button
@@ -125,11 +162,11 @@ export default class Profile extends Component {
                 </div>
               </Link>
             ) : (
-              <div className={styles.menuItem}>
-                <i className={`iconfont ${item.iconfont}`} />
-                <span>{item.name}</span>
-              </div>
-            )
+                <div className={styles.menuItem}>
+                  <i className={`iconfont ${item.iconfont}`} />
+                  <span>{item.name}</span>
+                </div>
+              )
           }
         />
 
