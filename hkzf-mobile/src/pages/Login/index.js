@@ -148,7 +148,9 @@ Login = withFormik({
       
       // 注意：无法在该方法中，通过 this 来获取到路由信息
       // 所以，需要通过 第二个对象参数中获取到 props 来使用 props
-      props.history.go(-1)
+      
+      // 判断是否从鉴权路由跳转而来 ，如果是 则返回原页面，如果不是 则后退一个页面
+     props.location.from ? props.history.replace(props.location.from):props.history.go(-1)
     } else {
       // 登录失败
       Toast.info(description, 2, null, false)

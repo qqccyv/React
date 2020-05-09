@@ -15,6 +15,8 @@ import MapComponent from './pages/Map'
 import HouseDatil from './pages/HouseDetail'
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AuthRouter from './components/AuthRouter';
+
 
 
 function App() {
