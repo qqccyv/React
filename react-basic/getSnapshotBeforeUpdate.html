@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .list {
+      height: 200px;
+      overflow: auto;
+      background-color: pink;
+    }
+
+    .item {
+      height: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="./js/react.development.js"></script>
+  <script src="./js/react-dom.development.js"></script>
+  <script src="./js/babel.min.js"></script>
+  <script type="text/babel">
+    class SubmitForm extends React.Component {
+      state = {
+        arrList: []
+      }
+      getSnapshotBeforeUpdate(prevProps, prevState) {
+        return this.list.scrollHeight
+      }
+      componentDidUpdate(prevProps, prevState, snapshot) {
+        this.list.scrollTop += this.list.scrollHeight - snapshot
+      }
+      componentDidMount() {
+        this.timer = setInterval(() => {
+          const { arrList } = this.state
+          let item = '新闻' + arrList.length
+          this.setState({
+            arrList: [item, ...arrList]
+          })
+        }, 1000)
+      }
+      getComponentList(el) {
+        this.list = el
+      }
+      render() {
+        const { arrList } = this.state
+        return (
+          <div className="list" ref={(el => this.getComponentList(el))}>
+            {
+              arrList.map(item => {
+                return <div key={item} className="item">{item}</div>
+              })
+            }
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<SubmitForm />, document.getElementById('test'))
+  </script>
+</body>
+
+</html>
