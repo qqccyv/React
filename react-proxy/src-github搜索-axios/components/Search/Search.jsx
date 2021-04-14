@@ -1,20 +1,14 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import PubSub from 'pubsub-js' // 引入pubsub订阅库
+import PropTypes from "prop-types";
 
 
 export default class Search extends Component {
-
+  static propTypes = {
+    search: PropTypes.func.isRequired
+  }
   search = () => {
     const { value: keyWord } = this.searchElement
-    // 发布订阅
-    PubSub.publish('updateStateStatus'/* 发布订阅事件名 */, { isFirst: false, loading: true }/* 发布订阅参数 */)
-    axios.get(`/api1/search/users?q=${keyWord}`).then(res => {
-      PubSub.publish('updateStateStatus', { users: res.data.items, loading: false })
-    }, error => {
-      console.error(error);
-      PubSub.publish('updateStateStatus', { err: error.message, loading: false })
-    })
+    this.props.search(keyWord)
   }
   render() {
     return (

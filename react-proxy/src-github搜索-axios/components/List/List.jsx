@@ -1,22 +1,14 @@
 import React, { Component } from 'react'
-import PubSub from 'pubsub-js'
+import PropTypes from 'prop-types'
 export default class List extends Component {
-  state = {
-    users: [],
-    isFirst: true,
-    loading: false,
-    err: ''
-  }
-  componentDidMount() {
-    // 订阅发布
-    this.subscribeList = PubSub.subscribe('updateStateStatus'/* 订阅发布事件名 */, (msg/* 订阅发布事件名 */, statusObj/* 订阅发布参数 */) => this.setState(statusObj))
-  }
-  componentWillUnmount() {
-    // 解除订阅
-    PubSub.unsubscribe(this.subscribeList)
+  static propTypes = {
+    users: PropTypes.array.isRequired,
+    isFirst: PropTypes.bool.isRequired,
+    loading: PropTypes.bool.isRequired,
+    err: PropTypes.string.isRequired
   }
   render() {
-    const { users, isFirst, loading, err } = this.state
+    const { users, isFirst, loading, err } = this.props
     return (
       <div className="row">
         {
