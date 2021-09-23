@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import Hello from './Hello';
 import img from './images/menu1.15200d52.png'
 import PropTypes from 'prop-types'
-import './index.css'
+import './index.css';
+import App from './App';
+import store from './redux/store';
+
 // const div = React.createElement('div',{class: 'btn'},'hello!')
 // ReactDOM.render(div,document.querySelector('#root'))
 
@@ -282,7 +285,7 @@ import './index.css'
 //   }
 // }
 
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+// import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 // const First = ()=>{
 //   return (
 //     <h3>这里是第一个页面</h3>
@@ -443,52 +446,56 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 //     )
 //   }
 // }
-const First = (props) => {
- const goSecond=()=>{
-  props.history.push('/second/a')
-  }
-  return (
-    <div>
-      <h4>这里是第一个页面</h4>
-      <button onClick={goSecond}>第二页</button>
-    </div>
-  )
-}
-const Second = (props) => {
- const goFirst = ()=>{
-    props.history.push('/first')
-  }
-  return (
-    <div>
-      <h4>这里是第二个页面</h4>
-      <button onClick={goFirst}>第一页</button>
-    </div>
-  )
-}
-const Second2 = (props) => {
- const goFirst = ()=>{
-    props.history.push('/first')
-  }
-  return (
-    <div>
-      <h4>这里是第二2个页面</h4>
-      <button onClick={goFirst}>第一页</button>
-    </div>
-  )
-}
 
-class App extends React.Component {
+// const First = (props) => {
+//  const goSecond=()=>{
+//   props.history.push('/second/a')
+//   }
+//   return (
+//     <div>
+//       <h4>这里是第一个页面</h4>
+//       <button onClick={goSecond}>第二页</button>
+//     </div>
+//   )
+// }
+// const Second = (props) => {
+//  const goFirst = ()=>{
+//     props.history.push('/first')
+//   }
+//   return (
+//     <div>
+//       <h4>这里是第二个页面</h4>
+//       <button onClick={goFirst}>第一页</button>
+//     </div>
+//   )
+// }
+// const Second2 = (props) => {
+//  const goFirst = ()=>{
+//     props.history.push('/first')
+//   }
+//   return (
+//     <div>
+//       <h4>这里是第二2个页面</h4>
+//       <button onClick={goFirst}>第一页</button>
+//     </div>
+//   )
+// }
+
+// class App extends React.Component {
 
 
-  render() {
-    return (
-      <Router>
-        <Route exact path="/" component={First}></Route>
-        <Route exact path="/first" component={First}></Route>
-        <Route exact  path="/second" component={Second}></Route>
-        <Route exact  path="/second/a" component={Second2}></Route>
-      </Router>
-    )
-  }
-}
+//   render() {
+//     return (
+//       <Router>
+//         <Route exact path="/" component={First}></Route>
+//         <Route exact path="/first" component={First}></Route>
+//         <Route exact path="/second" component={Second}></Route>
+//         <Route exact path="/second/a" component={Second2}></Route>
+//       </Router>
+//     )
+//   }
+// }
 ReactDOM.render(<App />, document.querySelector('#root'))
+store.subscribe(() => {
+  ReactDOM.render(<App />, document.querySelector('#root'))
+})
