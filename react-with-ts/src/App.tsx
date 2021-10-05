@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <Button size={ButtonSizes.Large} btnType={ButtonTypes.Default}>默认按钮</Button>
       <Button size={ButtonSizes.Large} btnType={ButtonTypes.Primary}>成功按钮</Button>
-      <Button size={ButtonSizes.Large} btnType={ButtonTypes.Link} href="www.baidu.com">Baidu Link</Button>
+      <Button size={ButtonSizes.Large} btnType={ButtonTypes.Link} href="https://www.baidu.com" target="_blank">Baidu Link</Button>
     </div>
   );
 }
