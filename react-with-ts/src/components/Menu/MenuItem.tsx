@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import classnames from 'classnames'
 import { MenuContext } from './Menu'
+// import Icon from '../Icon/Icon'
 
 
 export interface IMenuItemProps {
@@ -27,13 +28,15 @@ const MenuItem: React.FC<IMenuItemProps> = (props) => {
   }
   const classes = classnames('menu-item', className, {
     'is-disabled': disabled,
-    'is-active': passContext.index === index
+    'is-active': passContext.index === index,
+
   })
   return (
     <li key={index} onClick={handleClick} className={classes} style={style}>
       {children}
     </li>
   )
+
 }
 MenuItem.displayName = 'MenuItem'
 export default MenuItem

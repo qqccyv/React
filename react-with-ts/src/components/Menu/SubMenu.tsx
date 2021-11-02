@@ -1,7 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useRef } from 'react'
 import { MenuContext } from './Menu'
 import classNames from 'classnames'
 import { IMenuItemProps } from './MenuItem'
+import Icon from '../Icon/Icon';
+import useClickOutSide from '../../hooks/useClickOutSide';
+
 interface ISubMenuProps {
   index?: string,
   title: string,
@@ -14,6 +17,10 @@ const SubMenu: React.FC<ISubMenuProps> = (props) => {
   const defaultOpenSubmenu = passContext.defaultOpenSubmenu as Array<string>
   const isOpened = index && passContext.mode === 'vertical' && defaultOpenSubmenu.includes(index)
   const [open, setOpen] = useState(isOpened)
+  const componetRef = useRef(null)
+  useClickOutSide(componetRef, () => {
+    setOpen(false)
+  })
   // 处理点击事件的方法
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -55,12 +62,14 @@ const SubMenu: React.FC<ISubMenuProps> = (props) => {
   }
 
   const classes = classNames('menu-item submenu-item', className, {
-    'is-active': passContext.index === index
+    'is-active': passContext.index === index,
+    'is-vertical': passContext.mode === 'vertical',
+    'is-opened': open
   })
   return (
-    <li key={index} className={classes} {...horizontalEventFun} >
+    <li ref={componetRef} key={index} className={classes} {...horizontalEventFun} >
       <div className='submenu-title' {...verticalEventFun}>
-        {title}
+        {title}  <Icon className="arrow-icon" icon='chevron-down'></Icon>
       </div>
       {RenderChildrenComponent()}
     </li>

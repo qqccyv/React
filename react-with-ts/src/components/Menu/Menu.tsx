@@ -39,6 +39,15 @@ const Menu: React.FC<IMenuProps> = (props) => {
     setActive(index)
     onSelect && onSelect(index)
   }
+
+  const passContext: IMenuContext = {
+    index: active ? active : '0',
+    onSelect: handleClick,
+    mode,
+    defaultOpenSubmenu
+  }
+
+
   // 通过子节点渲染函数，限制只能传入特定的子节点
   const renderChild = () => {
     return React.Children.map(children, (child, index) => {
@@ -58,7 +67,7 @@ const Menu: React.FC<IMenuProps> = (props) => {
   })
   return (
     <ul className={classes} style={style}>
-      <MenuContext.Provider value={{ index: active ? active : '0', onSelect: handleClick, mode, defaultOpenSubmenu }}>
+      <MenuContext.Provider value={passContext}>
         {renderChild()}
       </MenuContext.Provider>
     </ul>
