@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes } from 'react-router'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Cenima from '../views/Cenima'
 import Center from '../views/Center'
 import Film from '../views/Film'
@@ -18,7 +18,8 @@ function MRouter() {
       </Route>
       <Route path="cenima" element={<Cenima></Cenima>}></Route>
       <Route path="center" element={<Center></Center>}></Route>
-      <Route path="/" element={<Film></Film>}></Route>
+      {/* 路由重定向 */}
+      <Route path="/" element={<Navigate to="/film"></Navigate>}></Route>
       <Route path="*" element={<NotFound></NotFound>}></Route>
     </Routes>
   )
