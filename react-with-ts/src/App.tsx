@@ -20,12 +20,16 @@ function App() {
 
   const resultValue = useDebounce(inputValue, 500)
   const [showValue, setShowValue] = useState('')
-
+  const [count, setCount] = useState(0)
   useEffect(() => {
     setShowValue(resultValue)
   }, [resultValue])
 
-
+  const numberChange = (): void => {
+    setCount((prev: number) => {
+      return prev + 1
+    })
+  }
 
   return (
     <div className="App">
@@ -53,6 +57,7 @@ function App() {
       <Button size={ButtonSizes.Large} btnType={ButtonTypes.Link} href="https://www.baidu.com" target="_blank">Baidu Link</Button>
       <input type="text" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)} />
       {showValue}
+      <button onClick={numberChange}>+</button> {count}
     </div>
   );
 }
