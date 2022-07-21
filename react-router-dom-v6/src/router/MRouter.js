@@ -19,8 +19,8 @@ function MRouter() {
         <Route path="nowplaying" element={<NowPlaying></NowPlaying>}></Route>
         <Route path="comingsoon" element={<ComingSoon></ComingSoon>}></Route>
       </Route>
-      <Route path="cenima" element={<Cenima></Cenima>}></Route>
-      <Route path="center" element={<Center></Center>}></Route>
+      <Route path="/cenima" element={<Cenima></Cenima>}></Route>
+      <Route path="/center" element={<Center></Center>}></Route>
       {/* 路由重定向 */}
       {/* <Route path="/" element={<Navigate to="/film"></Navigate>}></Route> */}
       <Route path="/" element={<Redirect to="/film"></Redirect >}></Route>
