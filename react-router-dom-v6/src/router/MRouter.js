@@ -7,6 +7,7 @@ import Detail from '../views/Detail'
 import Film from '../views/Film'
 import ComingSoon from '../views/Film/ComingSoon'
 import NowPlaying from '../views/Film/NowPlaying'
+import Login from '../views/Login'
 import NotFound from '../views/NotFound'
 
 function MRouter() {
@@ -21,8 +22,12 @@ function MRouter() {
         <Route path="comingsoon" element={<ComingSoon></ComingSoon>}></Route>
       </Route>
       <Route path="/cenima" element={<Cenima></Cenima>}></Route>
-      <Route path="/center" element={<Center></Center>}></Route>
-      <Route path="/detail" element={<Detail></Detail>}></Route>
+      {/* 需要登陆后访问的组件，可用封装的路由拦截鉴权组件包裹，进行判断拦截 */}
+      <Route path="/center" element={<AuthComponent>
+        <Center></Center>
+      </AuthComponent>}></Route>
+      <Route path="/detail/:id" element={<Detail></Detail>}></Route>
+      <Route path="/login" element={<Login></Login>}></Route>
       {/* 路由重定向 */}
       {/* <Route path="/" element={<Navigate to="/film"></Navigate>}></Route> */}
       <Route path="/" element={<Redirect to="/film"></Redirect >}></Route>
@@ -32,3 +37,8 @@ function MRouter() {
 }
 
 export default MRouter
+// 路由鉴权组件封装
+function AuthComponent({ children }) {
+  const isAuth = localStorage.getItem('token');
+  return isAuth ? children : <Redirect to={'/login'}></Redirect>
+}

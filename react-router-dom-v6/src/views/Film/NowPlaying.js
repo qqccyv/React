@@ -17,8 +17,10 @@ function NowPlaying() {
 
   }, [])
 const filmClickHandler = (film) => { 
-  console.log(film);
-  navigate(`/detail?id=${film.id}`)
+  // url传参
+  // navigate(`/detail?id=${film.id}`)
+  // 路由传参
+  navigate(`/detail/${film.id}`)
  }
   return (
     <div>
