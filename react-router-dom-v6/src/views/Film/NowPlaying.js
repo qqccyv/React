@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
+import FilItem from '../../components/FilItem';
+
 function NowPlaying() {
   const navigate = useNavigate()
   const [filmList, setFilmList] = useState([])
@@ -28,7 +30,8 @@ const filmClickHandler = (film) => {
         {
           filmList.length && filmList.map(filmItem=>{
             return (
-              <li key={filmItem.id} onClick={() => { filmClickHandler(filmItem) }}>{filmItem.filmName}</li>
+              // <li key={filmItem.id} onClick={() => { filmClickHandler(filmItem) }}>{filmItem.filmName}</li>
+              <FilItem key={filmItem.id} {...filmItem} ></FilItem>
             )
           })
         }
