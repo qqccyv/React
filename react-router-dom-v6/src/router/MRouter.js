@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Redirect from '../components/Redirect'
-import Cenima from '../views/Cenima'
+// import Cenima from '../views/Cenima'
 import Center from '../views/Center'
 import Detail from '../views/Detail'
 import Film from '../views/Film'
@@ -21,7 +21,7 @@ function MRouter() {
         <Route path="nowplaying" element={<NowPlaying></NowPlaying>}></Route>
         <Route path="comingsoon" element={<ComingSoon></ComingSoon>}></Route>
       </Route>
-      <Route path="/cenima" element={<Cenima></Cenima>}></Route>
+      <Route path="/cenima" element={LazyLoad('Cenima')}></Route>
       {/* 需要登陆后访问的组件，可用封装的路由拦截鉴权组件包裹，进行判断拦截 */}
       <Route path="/center" element={<AuthComponent>
         <Center></Center>
@@ -42,3 +42,11 @@ function AuthComponent({ children }) {
   const isAuth = localStorage.getItem('token');
   return isAuth ? children : <Redirect to={'/login'}></Redirect>
 }
+// 路由懒加载封装
+const LazyLoad = (path) => {
+  const Component = React.lazy(() => import(`../views/${path}`));
+  return <React.Suspense fallback={<>加载中..</>}>
+    <Component></Component>
+  </React.Suspense>
+}
+

@@ -30,8 +30,8 @@ const filmClickHandler = (film) => {
         {
           filmList.length && filmList.map(filmItem=>{
             return (
-              // <li key={filmItem.id} onClick={() => { filmClickHandler(filmItem) }}>{filmItem.filmName}</li>
-              <FilItem key={filmItem.id} {...filmItem} ></FilItem>
+              <li key={filmItem.id} onClick={() => { filmClickHandler(filmItem) }}>{filmItem.filmName}</li>
+              // <FilItem key={filmItem.id} {...filmItem} ></FilItem>
             )
           })
         }
