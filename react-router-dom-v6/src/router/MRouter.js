@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Redirect from '../components/Redirect'
 import Cenima from '../views/Cenima'
 import Center from '../views/Center'
+import Detail from '../views/Detail'
 import Film from '../views/Film'
 import ComingSoon from '../views/Film/ComingSoon'
 import NowPlaying from '../views/Film/NowPlaying'
@@ -21,6 +22,7 @@ function MRouter() {
       </Route>
       <Route path="/cenima" element={<Cenima></Cenima>}></Route>
       <Route path="/center" element={<Center></Center>}></Route>
+      <Route path="/detail" element={<Detail></Detail>}></Route>
       {/* 路由重定向 */}
       {/* <Route path="/" element={<Navigate to="/film"></Navigate>}></Route> */}
       <Route path="/" element={<Redirect to="/film"></Redirect >}></Route>
