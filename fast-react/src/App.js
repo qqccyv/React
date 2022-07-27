@@ -1,28 +1,11 @@
-import React, { createContext, /* useContext, */ useState } from 'react'
-const Numcontext = createContext()
-const Child = () => {
+import React, { memo, useState } from 'react'
+const Child = memo(() => {
+  console.log(123);
   return (
-    <Numcontext.Consumer>
-      {
-        ({ num, setNum }) => {
-          return <>
-            <h2>{num}</h2>
-            <button onClick={() => { setNum(num + 1) }}>累加</button>
-          </>
-        }
-      }
-    </Numcontext.Consumer>
+    <h2>子组件</h2>
   )
-}
-// const Child = () => {
-//   const { num, setNum } = useContext(Numcontext)
-//   return (
-//     <>
-//       <h2>{num}</h2>
-//       <button onClick={() => { setNum(num + 1) }}>累加</button>
-//     </>
-//   )
-// }
+})
+
 const Father = () => {
   return <Child></Child>
 }
@@ -30,8 +13,10 @@ const Father = () => {
 export default function App() {
   const [num, setNum] = useState(1)
   return (
-    <Numcontext.Provider value={{ num, setNum }}>
+    <>
+      <h1>{num}</h1>
+      <button onClick={() => { setNum(num + 1) }}>加一</button>
       <Father></Father>
-    </Numcontext.Provider>
+    </>
   )
 }
