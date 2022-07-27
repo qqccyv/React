@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import React, { createContext, useContext, useState } from 'react'
+const NumContest = createContext()
+const Child = () => {
+  const { num, setNum } = useContext(NumContest)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <h2>{num}</h2>
+      <button onClick={() => { setNum(num + 1) }}>累加</button>
+    </>
+  )
+}
+const Father = () => {
+  return <Child></Child>
 }
 
-export default App;
+export default function App() {
+  const [num, setNum] = useState(1)
+  return (
+    <NumContest.Provider value={{ num, setNum }}>
+      <Father></Father>
+    </NumContest.Provider>
+  )
+}
